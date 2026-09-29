@@ -1,0 +1,14 @@
+{
+  "name": "ingles-practico",
+  "version": "0.1.0",
+  "private": true,
+  "description": "App para aprender inglés con IA (PWA local-first). Sin paso de compilación.",
+  "type": "module",
+  "scripts": {
+    "start": "http-server -c-1 -p 8080 .",
+    "test": "node --test tests/*.test.mjs",
+    "sw": "node tools/gen-sw.mjs",
+    "icons": "node tools/icons.mjs",
+    "smoke": "node tests/smoke.e2e.mjs"
+  }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inglés Práctico</title>
+<meta name="description" content="Tu profesor personal de inglés con IA: aprende desde A1 hasta C2, habla, repasa con repetición espaciada y domina el inglés de tu profesión.">
+<meta name="theme-color" content="#4F46E5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Inglés Práctico">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta property="og:title" content="Inglés Práctico · Your AI English Coach">
+<meta property="og:description" content="Learn → Practice → Speak → Review → Improve → Master.">
+<link rel="stylesheet" href="css/app.css">
+<script>
+  // Tema antes de pintar (evita parpadeo)
+  try { var st = JSON.parse(localStorage.getItem("ip.v1") || "{}").settings || {}; if (st.theme && st.theme !== "system") document.documentElement.dataset.theme = st.theme; } catch (e) {}
+</script>
+</head>
+<body>
+<a class="sr-only" href="#view">Saltar al contenido</a>
+<header class="top"><div class="in">
+  <a class="brand" href="#/home"><span class="logo">IP</span><span>Inglés Práctico</span></a>
+  <span class="sp"></span>
+  <span class="chip-streak" id="streak" title="Racha">🔥 0</span>
+  <a class="iconbtn" href="#/search" aria-label="Buscar">🔎</a>
+</div></header>
+
+<main id="view" tabindex="-1"><noscript>Esta app necesita JavaScript.</noscript><p class="muted" style="text-align:center;margin-top:40px">Loading…</p></main>
+
+<button class="fab" id="ask" aria-label="Preguntar a mi profesor">🙋 ASK</button>
+
+<nav class="nav" aria-label="Navegación principal"><div class="in">
+  <a href="#/home" data-tab="/home"><span class="ic">🏠</span>HOME</a>
+  <a href="#/learn" data-tab="/learn"><span class="ic">📘</span>LEARN</a>
+  <a href="#/practice" data-tab="/practice"><span class="ic">🎯</span>PRACTICE</a>
+  <a href="#/speak" data-tab="/speak"><span class="ic">🗣️</span>SPEAK</a>
+  <a href="#/profile" data-tab="/profile"><span class="ic">👤</span>PROFILE</a>
+</div></nav>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

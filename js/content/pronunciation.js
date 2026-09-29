@@ -1,0 +1,46 @@
+// Pronunciation Coach (secciones 35-38). Sonidos difíciles para hispanohablantes.
+export const SOUNDS = [
+  { id: "pr.th", title: "TH /θ/ & /ð/", icon: "👅", tip: { es: "Pon la punta de la lengua entre los dientes y sopla suavemente. /θ/ sin voz (think), /ð/ con voz (this).", en: "Put your tongue between your teeth and blow gently." },
+    pairs: [["think", "sink"], ["three", "tree"], ["thank", "tank"], ["they", "day"], ["with", "wit"]],
+    words: ["think", "three", "thank you", "the", "this", "weather", "month", "healthy"],
+    sentences: ["I think it's Thursday.", "Thank you for the three reports.", "The weather is better this month."] },
+  { id: "pr.r", title: "English R /r/", icon: "🌀", tip: { es: "La r inglesa no vibra: curva la lengua hacia atrás sin tocar el paladar.", en: "Don't trill. Curl your tongue back without touching the roof of your mouth." },
+    pairs: [["right", "light"], ["road", "load"], ["pray", "play"], ["arrive", "alive"]],
+    words: ["red", "right", "report", "very", "problem", "around", "car", "water"],
+    sentences: ["The red car is on the right.", "Please read the report carefully.", "There's a problem with the water pressure."] },
+  { id: "pr.vb", title: "V vs B", icon: "🦷", tip: { es: "V: los dientes superiores tocan el labio inferior y vibra. B: los dos labios se juntan.", en: "V: top teeth on bottom lip. B: both lips together." },
+    pairs: [["very", "berry"], ["vote", "boat"], ["van", "ban"], ["vest", "best"], ["curve", "curb"]],
+    words: ["very", "valve", "voice", "every", "have", "vacation", "vendor", "review"],
+    sentences: ["The valve is very old.", "I have a vacation in November.", "Every vendor must be reviewed."] },
+  { id: "pr.ed", title: "-ED endings /t/ /d/ /ɪd/", icon: "🔚", tip: { es: "Después de t/d suena /ɪd/ (wanted). Después de sonidos sordos (p, k, s, sh, ch, f) suena /t/ (worked). En los demás, /d/ (played). ¡No digas «work-ed»!", en: "/ɪd/ after t/d, /t/ after voiceless sounds, /d/ after voiced sounds." },
+    pairs: [["worked", "work"], ["played", "play"], ["wanted", "want"], ["checked", "check"]],
+    words: ["worked /t/", "stopped /t/", "played /d/", "called /d/", "wanted /ɪd/", "needed /ɪd/", "inspected /ɪd/", "finished /t/"],
+    sentences: ["I worked late and finished the report.", "We inspected the valves and needed new seals.", "She called and asked about the order."] },
+  { id: "pr.s", title: "-S endings & initial S", icon: "🐍", tip: { es: "No agregues «e» antes de s + consonante: school (no «eschool»). Plurales: /s/ (cats), /z/ (dogs), /ɪz/ (boxes).", en: "No extra 'e' before s + consonant: school, Spanish, start." },
+    pairs: [["school", "eschool"], ["speak", "espeak"], ["states", "estates"]],
+    words: ["school", "Spanish", "start", "specification", "stress", "works /s/", "reports /s/", "pipes /s/", "boxes /ɪz/", "valves /z/"],
+    sentences: ["Students start school in September.", "The specification states the standard.", "She speaks Spanish and English."] },
+  { id: "pr.vowels", title: "Short vs long vowels", icon: "🎵", tip: { es: "La duración cambia el significado: ship (corta) vs sheep (larga). ¡Cuidado con beach y sheet!", en: "Length changes meaning: ship /ɪ/ vs sheep /iː/." },
+    pairs: [["ship", "sheep"], ["live", "leave"], ["full", "fool"], ["sit", "seat"], ["bit", "beat"]],
+    words: ["ship", "sheep", "live", "leave", "fill", "feel", "full", "pool"],
+    sentences: ["Please leave the ship.", "I live near the beach.", "Fill the tank until it's full."] },
+  { id: "pr.connected", title: "Connected speech", icon: "🔗", tip: { es: "Los nativos unen palabras: want to → «wanna», going to → «gonna», did you → «didja», an apple → «anapple».", en: "Native speakers link words: going to → gonna, want to → wanna." },
+    pairs: [["want to", "wanna"], ["going to", "gonna"], ["did you", "didja"], ["what do you", "whaddaya"]],
+    words: ["an apple", "turn it off", "pick it up", "check it out", "a lot of", "kind of"],
+    sentences: ["What do you want to do?", "I'm going to check it out.", "Did you turn it off?"] },
+  { id: "pr.stress", title: "Word stress & intonation", icon: "📈", tip: { es: "Una sílaba es más fuerte: PHOtograph, phoTOgraphy, photoGRAPHic. Preguntas sí/no suben al final ↗; preguntas wh- bajan ↘.", en: "Stress one syllable strongly. Yes/no questions rise ↗; wh- questions fall ↘." },
+    pairs: [["REcord (n)", "reCORD (v)"], ["PREsent (n)", "preSENT (v)"], ["DEsert", "deSSERT"]],
+    words: ["COMpany", "deVELopment", "engiNEER", "inSPECtion", "REsearch", "ecoNOMic", "phoTOgraphy", "SCHEdule"],
+    sentences: ["Are you ready? ↗", "Where do you work? ↘", "We need to record the record."] },
+];
+export const SOUND_BY_ID = Object.fromEntries(SOUNDS.map((s) => [s.id, s]));
+
+// Frases para Shadowing por nivel (sección 38)
+export const SHADOWING = {
+  A1: ["Hello, my name is Ana.", "I work in an office.", "Nice to meet you.", "Where is the bathroom, please?", "I'd like a coffee, please."],
+  A2: ["I went to the beach last weekend.", "Could you repeat that, please?", "I'm going to visit my family tomorrow.", "How much does this cost?", "The meeting starts at ten o'clock."],
+  B1: ["I've been working here for three years.", "If it rains, we'll postpone the inspection.", "Could you send me the report by Friday?", "I see your point, but I'm not sure I agree.", "The equipment was inspected yesterday."],
+  B2: ["Had I known about the delay, I would have informed the client.", "The results appear to suggest a clear trend.", "We need to figure out what caused the failure.", "Despite the budget cuts, we met every deadline."],
+  C1: ["Not only did we reduce costs, but we also improved safety.", "What worries me most is the lack of documentation.", "Having reviewed the data, we recommend the second option."],
+  C2: ["Such was the demand that production had to be doubled.", "It could be argued that the model oversimplifies reality.", "The committee recommends that the policy be reviewed annually."],
+};
