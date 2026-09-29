@@ -57,9 +57,18 @@ const BASE_UNITS = [
   U("b2-2", "B2", "advanced", "Regrets & wishes", "Lamentos y deseos", [["grammar", "g.third-conditional"], ["grammar", "g.wish"]]),
   U("b2-3", "B2", "advanced", "Deduction & contrast", "Deducción y contraste", [["grammar", "g.modals-deduction"], ["grammar", "g.linking"], ["read", "r.b2-quality"]]),
   U("b2-4", "B2", "advanced", "Getting things done", "Lograr que se haga", [["grammar", "g.causative"], ["talk", "contract-change"]]),
+  U("b2-5", "B2", "advanced", "Future plans & projections", "Planes y proyecciones", [["grammar", "g.future-adv"], ["vocab", "society"], ["read", "r.b2-ai-jobs"]]),
+  U("b2-6", "B2", "advanced", "Looking back", "Mirar atrás: lecciones aprendidas", [["grammar", "g.modals-past"], ["read", "r.b2-feedback"], ["talk", "performance-review"]]),
+  U("b2-7", "B2", "advanced", "Reporting the news", "Informar noticias", [["grammar", "g.passive-adv"], ["vocab", "environment"]]),
+  U("b2-8", "B2", "advanced", "Precise & emphatic English", "Inglés preciso y enfático", [["grammar", "g.relative-adv"], ["grammar", "g.emphasis"], ["pron", "pr.stress"]]),
   U("c1-1", "C1", "fluency", "Emphasis", "Énfasis", [["grammar", "g.inversion"], ["grammar", "g.mixed-conditionals"], ["read", "r.c1-energy"]]),
   U("c1-2", "C1", "fluency", "Style", "Estilo", [["grammar", "g.cleft"], ["grammar", "g.participle-clauses"], ["talk", "networking"]]),
+  U("c1-3", "C1", "fluency", "Reporting precisely", "Reportar con precisión", [["grammar", "g.reporting-verbs"], ["vocab", "academic"], ["read", "r.c1-urban"]]),
+  U("c1-4", "C1", "fluency", "Natural conversation", "Conversación natural", [["grammar", "g.ellipsis"], ["grammar", "g.discourse-markers"], ["talk", "conference-qa"], ["read", "r.c1-sleep"]]),
+  U("c1-5", "C1", "fluency", "Business leadership", "Liderazgo empresarial", [["vocab", "business-adv"], ["vocab", "c1-verbs"], ["talk", "board-presentation"], ["talk", "crisis-call"]]),
   U("c2-1", "C2", "c2", "Academic & professional writing", "Escritura académica y profesional", [["grammar", "g.academic"], ["grammar", "g.advanced-writing"], ["grammar", "g.subjunctive"], ["read", "r.c2-language"]]),
+  U("c2-2", "C2", "c2", "Register & nuance", "Registro y matiz", [["grammar", "g.register"], ["vocab", "c2-words"], ["read", "r.c2-trust"]]),
+  U("c2-3", "C2", "c2", "Critical reading & debate", "Lectura crítica y debate", [["read", "r.c2-language-ai"], ["talk", "conference-qa"]]),
 ];
 
 // Cada unidad termina con frases útiles (funciones comunicativas) y un examen de unidad

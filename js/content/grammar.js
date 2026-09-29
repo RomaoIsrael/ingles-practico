@@ -4,10 +4,12 @@ import B1 from "./grammar-b1.js";
 import ADV from "./grammar-adv.js";
 import DEEP1 from "./grammar-deep-1.js";
 import DEEP2 from "./grammar-deep-2.js";
+import DEEP3 from "./grammar-deep-3.js";
+import { NEW_TOPICS, EXTRA_ITEMS } from "./grammar-adv2.js";
 
-const DEEP = { ...DEEP1, ...DEEP2 };
+const DEEP = { ...DEEP1, ...DEEP2, ...DEEP3 };
 // Cada tema lleva sus apuntes profundos (tabla de forma, usos, ortografía, errores, comparación con el español, trucos)
-export const GRAMMAR = [...A1, ...A2, ...B1, ...ADV].map((g) => ({ ...g, deep: DEEP[g.id] || null }));
+export const GRAMMAR = [...A1, ...A2, ...B1, ...ADV, ...NEW_TOPICS].map((g) => ({ ...g, items: [...g.items, ...(EXTRA_ITEMS[g.id] || [])], deep: DEEP[g.id] || null }));
 export const GRAMMAR_BY_ID = Object.fromEntries(GRAMMAR.map((g) => [g.id, g]));
 
 // Ítem → objeto con nombres claros

@@ -1,5 +1,5 @@
 /* Service worker generado por tools/gen-sw.mjs — no editar a mano. */
-const CACHE = "ingles-practico-72315dd260";
+const CACHE = "ingles-practico-2306e568d1";
 const FILES = [
  "./",
  "./css/app.css",
@@ -9,15 +9,19 @@ const FILES = [
  "./icons/icon-maskable-512.png",
  "./icons/icon.svg",
  "./index.html",
+ "./js/content/advanced-extra.js",
  "./js/content/characters.js",
  "./js/content/curriculum.js",
+ "./js/content/exam-prep.js",
  "./js/content/extras.js",
  "./js/content/grammar-a1.js",
  "./js/content/grammar-a2.js",
  "./js/content/grammar-adv.js",
+ "./js/content/grammar-adv2.js",
  "./js/content/grammar-b1.js",
  "./js/content/grammar-deep-1.js",
  "./js/content/grammar-deep-2.js",
+ "./js/content/grammar-deep-3.js",
  "./js/content/grammar.js",
  "./js/content/placement-bank.js",
  "./js/content/pro-vocab.js",
@@ -29,6 +33,7 @@ const FILES = [
  "./js/content/starter.js",
  "./js/content/syllabus.js",
  "./js/content/tests-bank.js",
+ "./js/content/vocab-adv.js",
  "./js/content/vocab.js",
  "./js/core/actions.js",
  "./js/core/store.js",
@@ -52,6 +57,7 @@ const FILES = [
  "./js/ui/prefs.js",
  "./js/ui/runner.js",
  "./js/ui/screens/ask.js",
+ "./js/ui/screens/exams.js",
  "./js/ui/screens/home.js",
  "./js/ui/screens/learn.js",
  "./js/ui/screens/lessons-extra.js",

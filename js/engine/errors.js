@@ -36,7 +36,8 @@ const cap = (orig, rep) => (orig && orig[0] === orig[0].toUpperCase() && orig[0]
 export const RULES = [
   {
     id: "third-person-s", cat: "Verb Tenses", topic: "g.present-simple",
-    re: new RegExp(AUX_BEFORE + "\\b(he|she|it)\\s+(" + VERBS_3P + ")\\b", "gi"),
+    // Excluye el subjuntivo formal: "recommend that he go", "It is essential that she be…"
+    re: new RegExp(AUX_BEFORE + "(?<!\\b(?:recommend|recommended|suggest|suggested|insist|insisted|demand|demanded|request|requested|propose|proposed|require|required|essential|vital|important|necessary|crucial|imperative)\\s+that\\s)" + "\\b(he|she|it)\\s+(" + VERBS_3P + ")\\b", "gi"),
     fix: (m, s, v) => `${s} ${thirdPerson(v)}`,
     es: "Con he / she / it en Present Simple, el verbo lleva -s (o -es).",
     en: "For he / she / it in the Present Simple, the verb usually takes -s.",

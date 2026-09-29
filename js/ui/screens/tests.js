@@ -28,6 +28,7 @@ export function registerTests() {
         <a class="tile" href="#/exam/${s.levels.overall}"><span class="em">🏆</span><b>Level exam ${s.levels.overall}</b><span>Sube de nivel con dominio real</span></a>
         <a class="tile" href="#/exam/weekly"><span class="em">🏁</span><b>Weekly assessment</b><span>Repaso de la semana</span></a>
         <a class="tile" href="#/placement"><span class="em">🔄</span><b>Placement test</b><span>Reevaluación completa</span></a>
+        <a class="tile" href="#/exams"><span class="em">🌍</span><b>IELTS · TOEFL · TOEIC · Cambridge</b><span>Preparación de exámenes internacionales</span></a>
       </div>
       <h2>Your results</h2>${last.length ? `<div class="list">${last.map((t, i) => `<a class="item" href="#/certificate/${s.tests.length - 1 - i}"><span class="em">${t.pass === false ? "📘" : "🏅"}</span><span class="grow"><span class="title">${esc(t.title)}</span><div class="sub">${new Date(t.t).toLocaleDateString()} · ${t.score}${t.kind === "ef" ? "/100" : "%"}${t.level ? " · " + t.level : ""}</div></span>📄</a>`).join("")}</div>` : `<div class="card muted">Todavía no has hecho exámenes.</div>`}
       <h2>CEFR scale</h2><div class="card"><table class="t">${SCORE_BANDS.map((b) => `<tr><td><span class="lvl">${b.level}</span></td><td><b>${b.label}</b><div class="small muted">${esc(CAN_DO[b.level])}</div></td><td class="small">${b.min}–${b.max}</td></tr>`).join("")}</table></div>`);

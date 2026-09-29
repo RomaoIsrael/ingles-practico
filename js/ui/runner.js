@@ -59,6 +59,7 @@ export function runExercises({ title = "Practice", items, onDone, back = "#/prac
       <div class="muted small">${esc(title)}${ex.section ? " · " + esc(ex.section) : ""}</div>
       <h3 style="margin:4px 0 0">${esc(TYPE_LABEL[ex.type] || "")}</h3>
       ${instrBox(ex.type)}
+      ${ex.passage ? `<div class="card soft reader" style="font-size:1rem;margin-bottom:8px">${esc(ex.passage)}</div>` : ""}
       <div id="ex">${body(ex)}</div>
       <div id="fb"></div>
       <div class="sticky-foot"><button class="btn primary big" id="check" ${needsInput(ex) ? "disabled" : ""}>Check</button></div>`));
@@ -173,7 +174,7 @@ export function runExercises({ title = "Practice", items, onDone, back = "#/prac
     else if (self) { ok = true; score = 0.6; }
     else if (chosen != null) ok = chosen === ex.answer;
     else {
-      const accepted = ex.type === "type" ? [ex.answer, ex.full] : [ex.answer];
+      const accepted = ex.type === "type" ? [ex.answer, ...(ex.alts || []), ex.full] : [ex.answer, ...(ex.alts || [])];
       const r = check(text, accepted);
       ok = r.ok; typo = r.typo;
       if (!ok && ex.type === "type" && normalize(text) === normalize(ex.answer)) ok = true;

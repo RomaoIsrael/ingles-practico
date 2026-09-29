@@ -92,10 +92,19 @@ for (let b = 0; b < 8; b++) {
 await page.waitForTimeout(300); await shot("20-certificate");
 await go("/tests/level/A2"); await click("[data-go]"); await solveRunner(); await shot("21-level-cert");
 await go("/grammar/g.present-simple"); await shot("22-grammar-notes");
+// Preparación de exámenes: preguntas (incluye tipo "type" con alternativas) y speaking cronometrado
+await go("/exams/cambridge"); await click('[data-mode="questions"]'); await solveRunner(); await shot("26-exam-cert");
+await go("/exams/ielts"); await shot("27-ielts");
+await click('[data-speak="0"]'); await page.waitForTimeout(300); await shot("28-speaking-task");
+// Lección B2 nueva completa
+await go("/lesson/" + encodeURIComponent("b2-5:grammar:g.future-adv"));
+for (let i = 0; i < 8 && !(await page.locator("#check").count()); i++) await click("[data-next]");
+await solveRunner();
+if (await page.locator("#ch").count()) { await page.fill("#ch", "In five years I will have finished my master's degree."); await click("[data-check]"); await click("[data-check]"); }
 await go("/syllabus/A1"); await shot("23-syllabus");
 
 // Recorrido de todas las pantallas
-const routes = ["/home", "/learn/A1", "/learn/B2", "/learn/PRO", "/unit/a1-1", "/grammar", "/grammar/g.present-perfect", "/practice", "/vocab", "/vocab/topic/qa-core", "/word/w.inspection", "/dictionary", "/review", "/listening", "/reading", "/read/r.b1-incident", "/writing", "/writing/w.email-request", "/email", "/pronunciation", "/pron/pr.th", "/shadowing", "/mistakes", "/smart-review", "/games", "/game/match", "/game/memory", "/game/race", "/think", "/translate", "/library/falsefriends", "/library/phrasal", "/library/idioms", "/library/collocations", "/library/usuk", "/library/natural", "/doclab", "/speak", "/talk", "/interview", "/interview/candidate/behavioral", "/interview/recruiter/basic", "/fluency", "/pro", "/pro/qaqc", "/pro/law", "/pro/hr", "/pro/career", "/phrases/meeting", "/clauses", "/plain", "/cv", "/linkedin", "/profile", "/brain", "/brain?cat=grammar", "/map", "/reports", "/achievements", "/goals", "/favorites", "/settings", "/privacy", "/search", "/exam/A2", "/exam/weekly", "/plan/done", "/tests", "/tests/levels", "/tests/units", "/tests/business", "/tests/quick", "/syllabus", "/syllabus/B1", "/syllabus/C2", "/unit/a2-1", "/grammar/g.passive", "/grammar/g.inversion", "/lesson/" + encodeURIComponent("s-5:vocab:verbs")];
+const routes = ["/home", "/learn/A1", "/learn/B2", "/learn/PRO", "/unit/a1-1", "/grammar", "/grammar/g.present-perfect", "/practice", "/vocab", "/vocab/topic/qa-core", "/word/w.inspection", "/dictionary", "/review", "/listening", "/reading", "/read/r.b1-incident", "/writing", "/writing/w.email-request", "/email", "/pronunciation", "/pron/pr.th", "/shadowing", "/mistakes", "/smart-review", "/games", "/game/match", "/game/memory", "/game/race", "/think", "/translate", "/library/falsefriends", "/library/phrasal", "/library/idioms", "/library/collocations", "/library/usuk", "/library/natural", "/doclab", "/speak", "/talk", "/interview", "/interview/candidate/behavioral", "/interview/recruiter/basic", "/fluency", "/pro", "/pro/qaqc", "/pro/law", "/pro/hr", "/pro/career", "/phrases/meeting", "/clauses", "/plain", "/cv", "/linkedin", "/profile", "/brain", "/brain?cat=grammar", "/map", "/reports", "/achievements", "/goals", "/favorites", "/settings", "/privacy", "/search", "/exam/A2", "/exam/weekly", "/plan/done", "/tests", "/tests/levels", "/tests/units", "/tests/business", "/tests/quick", "/syllabus", "/syllabus/B1", "/syllabus/C2", "/unit/a2-1", "/grammar/g.passive", "/grammar/g.inversion", "/grammar/g.future-adv", "/grammar/g.register", "/exams", "/exams/ielts", "/exams/toeic", "/exams/cambridge", "/exams/toefl", "/unit/b2-6", "/unit/c1-5", "/unit/c2-2", "/syllabus/C1", "/read/r.c2-trust", "/roleplay/board-presentation", "/vocab/topic/c2-words", "/lesson/" + encodeURIComponent("s-5:vocab:verbs")];
 for (const r of routes) { await go(r); if (["/home", "/map", "/brain", "/reports", "/profile", "/pro/qaqc", "/speak", "/practice"].includes(r)) await shot("r" + r.replace(/[/?=]/g, "_")); }
 
 // Writing coach y Ask

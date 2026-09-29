@@ -3,6 +3,8 @@ import { GRAMMAR } from "./grammar.js";
 import { GENERAL_WORDS, GENERAL_TOPICS, buildWords } from "./vocab.js";
 import { PRO_WORDS, PRO_TOPICS } from "./pro-vocab.js";
 import { STARTER_WORDS, STARTER_TOPICS } from "./starter.js";
+import { ADV_WORDS, ADV_TOPICS } from "./vocab-adv.js";
+import { ADV_READINGS, ADV_SCENARIOS } from "./advanced-extra.js";
 import { READINGS } from "./reading.js";
 import { SCENARIOS } from "./scenarios.js";
 import { SOUNDS } from "./pronunciation.js";
@@ -50,10 +52,10 @@ function modeLevel(levels) {
 
 export function loadContent(packs = []) {
   C.grammar = [...GRAMMAR];
-  C.words = [...STARTER_WORDS, ...GENERAL_WORDS, ...PRO_WORDS];
-  C.topics = [...STARTER_TOPICS, ...GENERAL_TOPICS, ...PRO_TOPICS];
-  C.readings = [...READINGS];
-  C.scenarios = [...SCENARIOS];
+  C.words = [...STARTER_WORDS, ...GENERAL_WORDS, ...ADV_WORDS, ...PRO_WORDS];
+  C.topics = [...STARTER_TOPICS, ...GENERAL_TOPICS, ...ADV_TOPICS, ...PRO_TOPICS];
+  C.readings = [...READINGS, ...ADV_READINGS];
+  C.scenarios = [...SCENARIOS, ...ADV_SCENARIOS];
   for (const p of packs) {
     try { applyPack(p); } catch (e) { console.warn("Paquete de contenido ignorado:", e.message); }
   }

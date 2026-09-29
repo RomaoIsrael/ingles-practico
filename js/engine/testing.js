@@ -4,12 +4,13 @@ import { LEVELS, levelIndex, shuffle, pick } from "../core/util.js";
 import { itemObj } from "../content/grammar.js";
 import { TEST_READINGS, TEST_LISTENINGS, BUSINESS_ITEMS, SCORE_BANDS } from "../content/tests-bank.js";
 import { READINGS } from "../content/reading.js";
+import { ADV_READINGS } from "../content/advanced-extra.js";
 
-const EF_LEVELS = ["A1", "A2", "B1", "B2", "C1"];
+const EF_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 // Bloques (texto o diálogo + preguntas) por nivel, combinando el banco de exámenes y las lecturas del curso
 export function readingBlocks(level) {
-  const extra = READINGS.filter((r) => r.level === level).map((r) => ({ level, title: r.title, text: r.text, q: r.q }));
+  const extra = [...READINGS, ...ADV_READINGS].filter((r) => r.level === level).map((r) => ({ level, title: r.title, text: r.text, q: r.q }));
   return [...TEST_READINGS.filter((r) => r.level === level), ...extra];
 }
 export const listeningBlocks = (level) => TEST_LISTENINGS.filter((l) => l.level === level);

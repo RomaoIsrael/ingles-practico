@@ -1,3 +1,4 @@
+import { ADV_LISTENINGS, ADV_BUSINESS } from "./advanced-extra.js";
 // Banco original de exámenes (inspirado en los FORMATOS de EF SET y GoFluent; no se copia contenido oficial).
 // q: [pregunta, respuesta correcta, [distractores]]
 
@@ -25,7 +26,7 @@ export const TEST_READINGS = [
 ];
 
 // Diálogos para listening (se leen con TTS). "A:" y "B:" alternan voces si el dispositivo lo permite.
-export const TEST_LISTENINGS = [
+const BASE_LISTENINGS = [
   { level: "A1", lines: ["A: Hi! Are you Mr. Brown?", "B: No, I'm not. I'm Mr. Green. Mr. Brown is in room five."], q: [["What is the man's name?", "Mr. Green.", ["Mr. Brown.", "Mr. Five."]], ["Where is Mr. Brown?", "In room five.", ["At home.", "In room nine."]]] },
   { level: "A1", lines: ["A: How much is this T-shirt?", "B: It's twelve dollars.", "A: And the blue one?", "B: That one is fifteen."], q: [["How much is the first T-shirt?", "$12", ["$20", "$15"]], ["How much is the blue T-shirt?", "$15", ["$12", "$50"]]] },
   { level: "A2", lines: ["A: Excuse me, how do I get to the train station?", "B: Go straight on and take the second street on the left. The station is next to the post office.", "A: Is it far?", "B: No, it's about five minutes on foot."], q: [["Which street should the person take?", "The second on the left.", ["The first on the right.", "The second on the right."]], ["What is next to the station?", "The post office.", ["A bank.", "A hotel."]], ["How long is the walk?", "About five minutes.", ["About fifteen minutes.", "About an hour."]]] },
@@ -38,7 +39,7 @@ export const TEST_LISTENINGS = [
 ];
 
 // Preguntas de inglés de negocios, formato situacional (estilo GoFluent)
-export const BUSINESS_ITEMS = [
+const BASE_BUSINESS = [
   { level: "A2", q: "A colleague says: “Thanks for your help!” You reply:", a: "You're welcome.", d: ["Yes, please.", "I'm sorry."] },
   { level: "A2", q: "You answer the office phone. What do you say?", a: "Good morning, QualiTech. How can I help you?", d: ["Who are you?", "What do you want?"] },
   { level: "A2", q: "You want to know the time of a meeting. You ask:", a: "What time is the meeting?", d: ["When the meeting is?", "What hour the meeting?"] },
@@ -66,6 +67,9 @@ export const BUSINESS_ITEMS = [
   { level: "C1", q: "Complete: “Not only ___ the target, but we exceeded it.”", a: "did we meet", d: ["we met", "we did meet"] },
   { level: "C1", q: "Which sentence is the most concise for a report?", a: "Costs rose 12% owing to higher energy prices.", d: ["Costs, they went up by like 12 percent because energy was more expensive.", "There was an increase that happened in costs of 12%."] },
 ];
+
+export const TEST_LISTENINGS = [...BASE_LISTENINGS, ...ADV_LISTENINGS];
+export const BUSINESS_ITEMS = [...BASE_BUSINESS, ...ADV_BUSINESS];
 
 // Descriptores tipo EF SET: puntuación 0-100 ↔ CEFR
 export const SCORE_BANDS = [

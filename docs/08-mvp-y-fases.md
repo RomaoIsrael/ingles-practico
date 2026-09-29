@@ -97,7 +97,7 @@ Leyenda: ✅ implementado · 🟡 parcial / versión local · 🔜 fase futura (
 | 96–97 | Gamificación sin frustración | ✅ | sin vidas, protector de racha |
 | 98–100 | Today's Plan, recomendaciones, Smart Review | ✅ | |
 | 101–102 | Reportes semanal/mensual | ✅ | `#/reports` |
-| 103 | Certificaciones | 🔜 | ver §2 |
+| 103 | Certificaciones | ✅🟡 | `#/exams`: IELTS, TOEFL, TOEIC y Cambridge (formato, estrategias y práctica original); los bancos completos de simulacros se amplían en la Etapa B |
 | 104 | Exámenes periódicos | ✅ | `#/exam/:nivel`, `#/exam/weekly` |
 | 105 | Immersion Mode | ✅ | Ajustes |
 | 106 | US vs UK | ✅ | acento + biblioteca |
@@ -203,3 +203,17 @@ Antes de publicar contenido nuevo: gramática correcta · inglés natural (lo di
 | Muy didáctica | Lección en diapositivas con barra de pasos, ejemplos con audio antes de la regla, errores comunes y trucos, comparación con el español |
 
 Referencias pedagógicas (solo como inspiración de formato y secuencia, sin copiar contenido): MCER/CEFR y Cambridge English Scale (niveles y descriptores Can-do), secuencia gramatical de libros de texto internacionales, EF SET (test adaptativo de lectura y escucha con escala 0–100), GoFluent (tests por nivel con inglés de negocios), Wall Street English (unidades con objetivos y encuentros de práctica), Duolingo (ruta visual, microlecciones, gamificación).
+
+## 7. Ampliación v0.3 (B2–C2 y exámenes internacionales)
+
+| Área | Antes | Ahora |
+|------|-------|-------|
+| Temas de gramática | 45 | 54 (9 nuevos B2–C2 con apuntes completos) |
+| Ejercicios base de gramática | ≈ 360 | 443 |
+| Palabras | 538 | 608 (6 bancos B2–C2) |
+| Unidades B2 / C1 / C2 | 4 / 2 / 1 | 8 / 5 / 3 |
+| Lecturas / conversaciones | 13 / 25 | 19 / 29 |
+| Test adaptativo | hasta C1 | hasta C2 |
+| Exámenes internacionales | 🔜 | IELTS, TOEFL, TOEIC, Cambridge (`content/exam-prep.js`, `ui/screens/exams.js`) |
+
+Lo que sigue dependiendo de la Etapa B (servidor) y queda sin cambios: cuentas con Google/Apple, sincronización, pagos, notificaciones push, analítica de producto, CMS web, profesores y modo corporativo (ver §2).

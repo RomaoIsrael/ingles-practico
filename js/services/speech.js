@@ -39,7 +39,7 @@ export const sttAvailable = () => !!Rec;
 
 let active = null;
 // Devuelve { transcript, confidence, sec }. onInterim recibe el texto parcial.
-export function listen({ accent = "us", onInterim = () => {}, maxSec = 30 } = {}) {
+export function listen({ accent = "us", onInterim = () => {}, maxSec = 30, continuous = false } = {}) {
   return new Promise((resolve, reject) => {
     if (!Rec) return reject(new Error("unsupported"));
     if (active) try { active.abort(); } catch {}
@@ -47,7 +47,7 @@ export function listen({ accent = "us", onInterim = () => {}, maxSec = 30 } = {}
     active = r;
     r.lang = accent === "uk" ? "en-GB" : "en-US";
     r.interimResults = true;
-    r.continuous = false;
+    r.continuous = continuous;
     r.maxAlternatives = 1;
     const t0 = Date.now();
     let finalText = "", conf = 0, gotFinal = false;

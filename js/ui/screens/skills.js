@@ -233,12 +233,12 @@ function runListening(items, mode) {
   next();
 }
 
-function writingTask(p) {
+export function writingTask(p, back = "#/writing") {
   if (!p) return go("#/writing");
   const s = store.state;
   const t0 = Date.now();
   const tmpl = p.email ? EMAILS.filter((e) => e.tone).slice(0, 3) : [];
-  const v = render(`${backLink("#/writing", "Writing")}<div class="muted small">${esc(p.type)} · ${p.level}</div><h1>${esc(p.prompt)}</h1>${tr(p.es)}
+  const v = render(`${backLink(back, back === "#/writing" ? "Writing" : "Back")}<div class="muted small">${esc(p.type)} · ${p.level}</div><h1>${esc(p.prompt)}</h1>${tr(p.es)}
     ${p.email ? `<details class="card soft"><summary>📐 Email structure</summary><ol class="small"><li>Greeting (Dear… / Hi…)</li><li>Purpose (I'm writing to…)</li><li>Details</li><li>Request / next step (Could you…?)</li><li>Closing (Best regards,)</li></ol><div class="small">Models: ${tmpl.map((e) => `<a href="#" data-model="${e.id}">${esc(e.title)}</a>`).join(" · ")}</div></details>` : ""}
     ${howTo("Cómo escribir tu texto", ["Lee la consigna y piensa 1 minuto qué quieres decir.", p.email ? "Sigue la estructura: saludo → propósito → detalles → petición → despedida (mira los modelos arriba)." : "Organiza tus ideas: introducción, 2–3 ideas con ejemplos y una conclusión.", `Escribe al menos <b>${p.min} palabras</b>. Usa conectores: because, so, however, although…`, "Pulsa <b>Check my writing</b>: verás los errores explicados, la versión corregida y (con IA) versiones natural y profesional."])}
     <textarea class="inp" id="t" rows="9" placeholder="Write here…" style="margin-top:10px"></textarea>
