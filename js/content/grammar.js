@@ -2,8 +2,12 @@ import A1 from "./grammar-a1.js";
 import A2 from "./grammar-a2.js";
 import B1 from "./grammar-b1.js";
 import ADV from "./grammar-adv.js";
+import DEEP1 from "./grammar-deep-1.js";
+import DEEP2 from "./grammar-deep-2.js";
 
-export const GRAMMAR = [...A1, ...A2, ...B1, ...ADV];
+const DEEP = { ...DEEP1, ...DEEP2 };
+// Cada tema lleva sus apuntes profundos (tabla de forma, usos, ortografía, errores, comparación con el español, trucos)
+export const GRAMMAR = [...A1, ...A2, ...B1, ...ADV].map((g) => ({ ...g, deep: DEEP[g.id] || null }));
 export const GRAMMAR_BY_ID = Object.fromEntries(GRAMMAR.map((g) => [g.id, g]));
 
 // Ítem → objeto con nombres claros

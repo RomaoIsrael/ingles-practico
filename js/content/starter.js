@@ -1,0 +1,158 @@
+// Nivel STARTER (desde cero, "Pre-A1"): alfabeto, números, colores, días y meses, el aula, el cuerpo,
+// animales, trabajos, lugares y verbos básicos. Contenido original.
+import { buildWords } from "./vocab.js";
+
+// Alfabeto: letra, cómo se dice, ejemplo
+export const ALPHABET = [
+  ["A", "ei", "apple"], ["B", "bi", "book"], ["C", "si", "cat"], ["D", "di", "dog"], ["E", "i", "egg"], ["F", "ef", "fish"],
+  ["G", "yi", "game"], ["H", "eich", "house"], ["I", "ai", "ice"], ["J", "yei", "juice"], ["K", "kei", "key"], ["L", "el", "lemon"],
+  ["M", "em", "milk"], ["N", "en", "nose"], ["O", "ou", "orange"], ["P", "pi", "pen"], ["Q", "kiu", "queen"], ["R", "ar", "red"],
+  ["S", "es", "sun"], ["T", "ti", "table"], ["U", "iu", "umbrella"], ["V", "vi", "van"], ["W", "dábliu", "water"], ["X", "ex", "box"],
+  ["Y", "uai", "yellow"], ["Z", "zi (US) / zed (UK)", "zoo"],
+];
+
+// Letras que los hispanohablantes confunden al deletrear
+export const CONFUSING_LETTERS = [
+  ["E", "I", "E suena «i» y la I suena «ai»."], ["A", "E", "A suena «ei»; E suena «i»."], ["G", "J", "G suena «yi»; J suena «yei»."],
+  ["I", "Y", "I suena «ai»; Y suena «uai»."], ["U", "W", "U suena «iu»; W suena «dábliu» (double u)."],
+];
+
+const RAW = {
+  numbers: { title: "Numbers", es: "Números", icon: "🔢", level: "A1", words: [
+    ["one", "uno", "wʌn", "the number 1", "I have one brother.", "A1", "1️⃣"],
+    ["two", "dos", "tuː", "the number 2", "We have two cats.", "A1", "2️⃣"],
+    ["three", "tres", "θriː", "the number 3", "The meeting is at three.", "A1", "3️⃣"],
+    ["four", "cuatro", "fɔːr", "the number 4", "There are four rooms.", "A1", "4️⃣"],
+    ["five", "cinco", "faɪv", "the number 5", "I work five days a week.", "A1", "5️⃣"],
+    ["six", "seis", "sɪks", "the number 6", "I get up at six.", "A1", "6️⃣"],
+    ["seven", "siete", "ˈsevn", "the number 7", "A week has seven days.", "A1", "7️⃣"],
+    ["eight", "ocho", "eɪt", "the number 8", "Class starts at eight.", "A1", "8️⃣"],
+    ["nine", "nueve", "naɪn", "the number 9", "My son is nine.", "A1", "9️⃣"],
+    ["ten", "diez", "ten", "the number 10", "I have ten dollars.", "A1", "🔟"],
+    ["eleven", "once", "ɪˈlevn", "the number 11", "The bus comes at eleven.", "A1", "🕚"],
+    ["twelve", "doce", "twelv", "the number 12", "A year has twelve months.", "A1", "🕛"],
+    ["thirteen", "trece", "ˌθɜːrˈtiːn", "the number 13 (stress on -TEEN)", "She is thirteen years old.", "A1", "🔢"],
+    ["twenty", "veinte", "ˈtwenti", "the number 20", "I'm twenty years old.", "A1", "🔢"],
+    ["thirty", "treinta", "ˈθɜːrti", "the number 30 (stress on THIR-)", "The room costs thirty dollars.", "A1", "🔢"],
+    ["one hundred", "cien", "wʌn ˈhʌndrəd", "the number 100", "There are one hundred employees.", "A1", "💯"],
+    ["first", "primero", "fɜːrst", "number 1 in order", "My office is on the first floor.", "A1", "🥇"],
+    ["second", "segundo", "ˈsekənd", "number 2 in order", "Take the second street on the left.", "A1", "🥈"],
+  ]},
+  colors: { title: "Colors", es: "Colores", icon: "🎨", level: "A1", words: [
+    ["red", "rojo", "red", "the color of blood", "My car is red.", "A1", "🔴"],
+    ["blue", "azul", "bluː", "the color of the sky", "The sky is blue.", "A1", "🔵"],
+    ["green", "verde", "ɡriːn", "the color of grass", "Green means go.", "A1", "🟢"],
+    ["yellow", "amarillo", "ˈjeloʊ", "the color of a lemon", "Bananas are yellow.", "A1", "🟡"],
+    ["black", "negro", "blæk", "the darkest color", "I have a black cat.", "A1", "⚫"],
+    ["white", "blanco", "waɪt", "the color of snow", "The walls are white.", "A1", "⚪"],
+    ["orange", "naranja / anaranjado", "ˈɔːrɪndʒ", "a color between red and yellow", "Safety vests are orange.", "A1", "🟠"],
+    ["brown", "café / marrón", "braʊn", "the color of chocolate", "He has brown eyes.", "A1", "🟤"],
+    ["gray", "gris", "ɡreɪ", "a color between black and white", "The pipe is gray.", "A1", "🩶", "", "", "grey"],
+    ["pink", "rosado", "pɪŋk", "a light red color", "She likes pink flowers.", "A1", "🩷"],
+  ]},
+  calendar: { title: "Days & months", es: "Días y meses", icon: "📅", level: "A1", words: [
+    ["Monday", "lunes", "ˈmʌndeɪ", "the day after Sunday", "The meeting is on Monday.", "A1", "📅"],
+    ["Tuesday", "martes", "ˈtuːzdeɪ", "the day after Monday", "I have English on Tuesday.", "A1", "📅"],
+    ["Wednesday", "miércoles", "ˈwenzdeɪ", "the day after Tuesday (the first d is silent)", "We play soccer on Wednesday.", "A1", "📅"],
+    ["Thursday", "jueves", "ˈθɜːrzdeɪ", "the day after Wednesday", "The audit is on Thursday.", "A1", "📅"],
+    ["Friday", "viernes", "ˈfraɪdeɪ", "the day after Thursday", "I love Friday!", "A1", "🎉"],
+    ["Saturday", "sábado", "ˈsætərdeɪ", "the day after Friday", "On Saturday I visit my parents.", "A1", "🛋️"],
+    ["Sunday", "domingo", "ˈsʌndeɪ", "the day after Saturday", "I don't work on Sunday.", "A1", "☀️"],
+    ["January", "enero", "ˈdʒænjueri", "the first month of the year", "My birthday is in January.", "A1", "❄️"],
+    ["April", "abril", "ˈeɪprəl", "the fourth month of the year", "It rains a lot in April.", "A1", "🌧️"],
+    ["July", "julio", "dʒuˈlaɪ", "the seventh month of the year", "We travel in July.", "A1", "🏖️"],
+    ["December", "diciembre", "dɪˈsembər", "the last month of the year", "Christmas is in December.", "A1", "🎄"],
+    ["weekend", "fin de semana", "ˈwiːkend", "Saturday and Sunday", "What do you do on the weekend?", "A1", "🏝️"],
+  ]},
+  classroom: { title: "Classroom English", es: "Inglés del aula", icon: "🏫", level: "A1", words: [
+    ["book", "libro", "bʊk", "pages with writing that you read", "Open your book, please.", "A1", "📖"],
+    ["pen", "bolígrafo", "pen", "a tool for writing with ink", "Can I borrow your pen?", "A1", "🖊️"],
+    ["pencil", "lápiz", "ˈpensl", "a tool for writing that you can erase", "Write your name with a pencil.", "A1", "✏️"],
+    ["notebook", "cuaderno", "ˈnoʊtbʊk", "a book with empty pages to write in", "Write the new words in your notebook.", "A1", "📓"],
+    ["question", "pregunta", "ˈkwestʃən", "something you ask", "Can I ask a question?", "A1", "❓"],
+    ["answer", "respuesta / responder", "ˈænsər", "what you say to a question", "What's the answer?", "A1", "💡"],
+    ["repeat", "repetir", "rɪˈpiːt", "to say again", "Can you repeat that, please?", "A1", "🔁"],
+    ["spell", "deletrear", "spel", "to say the letters of a word", "How do you spell your name?", "A1", "🔤"],
+    ["understand", "entender", "ˌʌndərˈstænd", "to know the meaning of something", "Sorry, I don't understand.", "A1", "🤔"],
+    ["mean", "significar", "miːn", "to have a meaning", "What does this word mean?", "A1", "📚"],
+    ["slowly", "despacio", "ˈsloʊli", "not fast", "Please speak slowly.", "A1", "🐢"],
+  ]},
+  body: { title: "The body", es: "El cuerpo", icon: "🧍", level: "A1", words: [
+    ["head", "cabeza", "hed", "the top part of the body", "My head hurts.", "A1", "🙂"],
+    ["eye", "ojo", "aɪ", "the part of the body you see with", "She has blue eyes.", "A1", "👁️"],
+    ["ear", "oreja / oído", "ɪr", "the part of the body you hear with", "Use ear protection in the plant.", "A1", "👂"],
+    ["nose", "nariz", "noʊz", "the part of the face you smell with", "My nose is cold.", "A1", "👃"],
+    ["mouth", "boca", "maʊθ", "the part of the face you eat with", "Open your mouth, please.", "A1", "👄"],
+    ["hand", "mano", "hænd", "the part at the end of your arm", "Wash your hands.", "A1", "✋"],
+    ["arm", "brazo", "ɑːrm", "the part between shoulder and hand", "He broke his arm.", "A1", "💪"],
+    ["leg", "pierna", "leɡ", "the part of the body you walk with", "My leg hurts after running.", "A1", "🦵"],
+    ["foot", "pie (plural: feet)", "fʊt", "the part at the end of your leg", "I walk to work on foot.", "A1", "🦶"],
+    ["back", "espalda", "bæk", "the back part of the body", "Lift with your legs, not your back.", "A1", "🧍"],
+  ]},
+  animals: { title: "Animals", es: "Animales", icon: "🐶", level: "A1", words: [
+    ["dog", "perro", "dɔːɡ", "an animal people keep as a pet", "My dog is very friendly.", "A1", "🐶"],
+    ["cat", "gato", "kæt", "a small pet that says 'meow'", "The cat is on the sofa.", "A1", "🐱"],
+    ["bird", "pájaro", "bɜːrd", "an animal with wings and feathers", "A bird is singing.", "A1", "🐦"],
+    ["horse", "caballo", "hɔːrs", "a large animal people ride", "Can you ride a horse?", "A1", "🐴"],
+    ["cow", "vaca", "kaʊ", "a farm animal that gives milk", "The cow gives milk.", "A1", "🐄"],
+    ["chicken (animal)", "gallina / pollo", "ˈtʃɪkɪn", "a farm bird that gives eggs", "The chickens are in the garden.", "A1", "🐔"],
+    ["fish", "pez / pescado", "fɪʃ", "an animal that lives in water", "I have two fish at home.", "A1", "🐟"],
+    ["turtle", "tortuga", "ˈtɜːrtl", "an animal with a hard shell", "Galápagos turtles are huge.", "A1", "🐢"],
+  ]},
+  jobs: { title: "Jobs", es: "Trabajos y profesiones", icon: "🧑‍🔧", level: "A1", words: [
+    ["engineer", "ingeniero/a", "ˌendʒɪˈnɪr", "a person who designs or builds machines or structures", "I'm an engineer.", "A1", "👷"],
+    ["nurse", "enfermero/a", "nɜːrs", "a person who cares for sick people", "She's a nurse at the hospital.", "A1", "🧑‍⚕️"],
+    ["police officer", "policía", "pəˈliːs ˈɔːfɪsər", "a person who protects people and keeps order", "The police officer helped us.", "A1", "👮"],
+    ["cook", "cocinero/a", "kʊk", "a person who prepares food", "He's a cook in a hotel.", "A1", "🧑‍🍳"],
+    ["farmer", "agricultor/a", "ˈfɑːrmər", "a person who works on a farm", "My grandfather is a farmer.", "A1", "🧑‍🌾"],
+    ["accountant", "contador/a", "əˈkaʊntənt", "a person who works with money records", "She's an accountant.", "A2", "🧮"],
+    ["mechanic", "mecánico/a", "məˈkænɪk", "a person who repairs engines", "The mechanic fixed my car.", "A1", "🔧"],
+    ["salesperson", "vendedor/a", "ˈseɪlzpɜːrsn", "a person who sells things", "He's a salesperson for a tech company.", "A2", "🛍️"],
+    ["unemployed", "desempleado", "ˌʌnɪmˈplɔɪd", "without a job", "He is unemployed at the moment.", "A2", "🪑"],
+  ]},
+  places: { title: "Places in town", es: "Lugares de la ciudad", icon: "🏙️", level: "A1", words: [
+    ["bank", "banco", "bæŋk", "a place for money", "The bank opens at nine.", "A1", "🏦"],
+    ["pharmacy", "farmacia", "ˈfɑːrməsi", "a shop that sells medicine", "Is there a pharmacy near here?", "A1", "💊", "drugstore"],
+    ["supermarket", "supermercado", "ˈsuːpərmɑːrkɪt", "a big shop for food", "I buy food at the supermarket.", "A1", "🛒"],
+    ["school", "escuela", "skuːl", "a place where children learn", "My kids go to school by bus.", "A1", "🏫"],
+    ["park", "parque", "pɑːrk", "a public area with grass and trees", "Let's walk in the park.", "A1", "🌳"],
+    ["church", "iglesia", "tʃɜːrtʃ", "a building for Christian worship", "The church is very old.", "A1", "⛪"],
+    ["post office", "oficina de correos", "poʊst ˈɔːfɪs", "a place to send letters", "Where is the post office?", "A1", "🏤"],
+    ["street", "calle", "striːt", "a road in a town", "I live on Bolívar Street.", "A1", "🛣️"],
+    ["near", "cerca", "nɪr", "not far", "The hotel is near the airport.", "A1", "📍", "close to", "far"],
+    ["next to", "al lado de", "nekst tuː", "beside", "The bank is next to the pharmacy.", "A1", "↔️"],
+  ]},
+  verbs: { title: "Everyday verbs", es: "Verbos básicos", icon: "🏃", level: "A1", words: [
+    ["be", "ser / estar", "biː", "the most important verb: am, is, are", "I want to be a doctor.", "A1", "🙋"],
+    ["have", "tener", "hæv", "to own or hold", "I have a car.", "A1", "🎒"],
+    ["go", "ir", "ɡoʊ", "to move to a place", "I go to work by bus.", "A1", "➡️"],
+    ["eat", "comer", "iːt", "to put food in your mouth", "We eat lunch at one.", "A1", "🍽️"],
+    ["drink", "beber / tomar", "drɪŋk", "to take liquid into your mouth", "I drink water every day.", "A1", "🥤"],
+    ["sleep", "dormir", "sliːp", "to rest with your eyes closed", "I sleep eight hours.", "A1", "😴"],
+    ["work", "trabajar", "wɜːrk", "to do a job", "I work in an office.", "A1", "💼"],
+    ["study", "estudiar", "ˈstʌdi", "to learn about a subject", "I study English every day.", "A1", "📚"],
+    ["live", "vivir", "lɪv", "to have your home in a place", "I live in Quito.", "A1", "🏠"],
+    ["like", "gustar", "laɪk", "to think something is nice", "I like coffee.", "A1", "👍"],
+    ["want", "querer", "wɑːnt", "to wish for something", "I want a new job.", "A1", "🙏"],
+    ["need", "necesitar", "niːd", "to have to have something", "I need help.", "A1", "🆘"],
+    ["speak", "hablar (un idioma)", "spiːk", "to say words", "I speak Spanish.", "A1", "🗣️"],
+    ["read", "leer", "riːd", "to look at words and understand them", "I read the news in the morning.", "A1", "📰"],
+    ["write", "escribir", "raɪt", "to put words on paper or a screen", "Write your name here.", "A1", "✍️"],
+    ["open", "abrir", "ˈoʊpən", "to make something not closed", "Open the door, please.", "A1", "🚪", "", "close"],
+  ]},
+};
+
+const built = buildWords(RAW);
+export const STARTER_WORDS = built.words;
+export const STARTER_TOPICS = built.topics;
+
+// Frases de supervivencia (Survival English)
+export const SURVIVAL = [
+  ["Hello! / Hi!", "¡Hola!"], ["Good morning.", "Buenos días."], ["Good afternoon.", "Buenas tardes."], ["Good evening.", "Buenas noches (al llegar)."],
+  ["Good night.", "Buenas noches (al despedirse)."], ["Goodbye. / Bye.", "Adiós."], ["See you later.", "Hasta luego."], ["How are you?", "¿Cómo estás?"],
+  ["I'm fine, thanks. And you?", "Bien, gracias. ¿Y tú?"], ["What's your name?", "¿Cómo te llamas?"], ["My name is…", "Me llamo…"],
+  ["Nice to meet you.", "Mucho gusto."], ["Where are you from?", "¿De dónde eres?"], ["I'm from Ecuador.", "Soy de Ecuador."],
+  ["Please.", "Por favor."], ["Thank you.", "Gracias."], ["You're welcome.", "De nada."], ["Sorry.", "Perdón / Lo siento."],
+  ["Excuse me.", "Disculpe."], ["I don't understand.", "No entiendo."], ["Can you repeat, please?", "¿Puede repetir, por favor?"],
+  ["Please speak slowly.", "Por favor hable despacio."], ["How do you say … in English?", "¿Cómo se dice … en inglés?"], ["What does … mean?", "¿Qué significa …?"],
+];

@@ -10,7 +10,7 @@ import { FLUENCY_PATH } from "../../content/curriculum.js";
 import { detect, correct } from "../../engine/errors.js";
 import { record, current } from "../../engine/brain.js";
 import { analyzeText, speakTime, activity, lessonDone } from "../../core/actions.js";
-import { render, on, audioBtn, backLink, progressBar, $, toast, tr } from "../components.js";
+import { render, on, audioBtn, backLink, progressBar, $, toast, tr, howTo } from "../components.js";
 import { route, go, finishScreen, session } from "../app.js";
 import { speak, listen, sttAvailable, stopListening, stopSpeaking } from "../../services/speech.js";
 import { aiReady, chat, structured, friendlyError } from "../../services/ai.js";
@@ -64,6 +64,7 @@ function roleplay(sc) {
   const v = render(`<div class="row between"><a class="btn ghost sm" href="${lesson ? `#/unit/${lesson.unit}` : "#/speak"}">← Exit</a><span class="small muted" id="timer">🎙️ 0:00</span></div>
     <div class="who" style="margin:6px 0 10px"><div class="avatar" style="background:${ch.color}22">${ch.emoji}</div><div><b>${esc(ch.name)}</b> <span class="muted small">· ${esc(ch.role)}</span><div class="small muted">${sc.story ? "📖 REAL LIFE MODE · " : ""}${esc(sc.title)} · ${esc(sc.goal)}</div></div></div>
     ${sc.story ? `<div class="card hero" style="padding:12px 14px;margin-bottom:10px"><b>${sc.emoji} YOU ARE ${esc(sc.title.replace(/^At the /i, "AT THE ").toUpperCase())}</b></div>` : ""}
+    ${howTo("Cómo funciona esta conversación", ["Lee o escucha lo que dice el personaje (🔊). Si hay traducción, aparece debajo.", "Responde <b>escribiendo</b> o pulsando 🎤 y hablando. Frases cortas están bien.", "¿No sabes qué decir? Pulsa <b>🆘 HELP</b>: cada vez te da una pista más (vocabulario → estructura → primeras palabras → frase completa).", "Si cometes un error, verás 💡 <i>Better</i> con la forma correcta. ¡Sigue hablando!", "Al final pulsa <b>🏁 End & evaluate</b> para ver tu evaluación y cómo decirlo mejor."], { open: !store.state.conversations.length })}
     <div class="chat" id="chat" aria-live="polite"></div>
     <div id="hint"></div>
     <div class="composer"><textarea class="inp" id="msg" rows="1" placeholder="Type or tap the mic…" aria-label="Tu respuesta"></textarea>${voice ? `<button class="mic" data-mic aria-label="Hablar">🎤</button>` : ""}<button class="btn primary" data-send aria-label="Enviar">➤</button></div>

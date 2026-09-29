@@ -8,7 +8,7 @@ import { SOUNDS } from "../../content/pronunciation.js";
 import { makeGrammarExercise, vocabExercise } from "../../engine/exercises.js";
 import { detect, correct } from "../../engine/errors.js";
 import { answer, activity, addWord, wordResult } from "../../core/actions.js";
-import { render, on, audioBtn, backLink, progressBar, $, tappable, toast } from "../components.js";
+import { render, on, audioBtn, backLink, progressBar, $, tappable, toast, howTo } from "../components.js";
 import { route, go, finishScreen } from "../app.js";
 import { runExercises } from "../runner.js";
 import { wordSheet } from "./skills.js";
@@ -41,6 +41,7 @@ export function registerLibrary() {
   route("/games", () => {
     const G = [["match", "🔗", "Word Match", "Empareja inglés–español"], ["builder", "🧱", "Sentence Builder", "Ordena las palabras"], ["listening", "🎧", "Listening Challenge", "¿Qué frase escuchaste?"], ["race", "🏎️", "Vocabulary Race", "60 segundos"], ["puzzle", "🧩", "Grammar Puzzle", "Temas mezclados"], ["pron", "🎤", "Pronunciation Challenge", "Palabras difíciles"], ["detective", "🕵️", "Word Detective", "Encuentra el error"], ["memory", "🃏", "Memory Vocabulary", "Parejas de cartas"]];
     render(`${backLink("#/practice", "Practice")}<h1>🎮 Game Mode</h1><p class="muted small">Jugar también es practicar: cada respuesta actualiza tu English Brain.</p>
+      ${howTo("Cómo se juega", ["<b>Word Match:</b> toca una palabra en inglés y luego su traducción.", "<b>Sentence Builder:</b> ordena las palabras para formar la frase.", "<b>Vocabulary Race:</b> responde todas las que puedas en 60 segundos.", "<b>Memory:</b> encuentra las parejas dibujo ↔ palabra.", "<b>Word Detective:</b> encuentra y corrige el error de la frase.", "<b>Listening Challenge / Pronunciation Challenge:</b> escucha o habla."])}
       <div class="grid2">${G.map(([id, e, t, d]) => `<a class="tile" href="#/game/${id}"><span class="em">${e}</span><b>${t}</b><span>${d}</span></a>`).join("")}</div>`);
   });
   route("/game/:id", ({ id }) => game(id));

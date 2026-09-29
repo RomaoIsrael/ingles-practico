@@ -2,6 +2,7 @@
 import { GRAMMAR } from "./grammar.js";
 import { GENERAL_WORDS, GENERAL_TOPICS, buildWords } from "./vocab.js";
 import { PRO_WORDS, PRO_TOPICS } from "./pro-vocab.js";
+import { STARTER_WORDS, STARTER_TOPICS } from "./starter.js";
 import { READINGS } from "./reading.js";
 import { SCENARIOS } from "./scenarios.js";
 import { SOUNDS } from "./pronunciation.js";
@@ -49,8 +50,8 @@ function modeLevel(levels) {
 
 export function loadContent(packs = []) {
   C.grammar = [...GRAMMAR];
-  C.words = [...GENERAL_WORDS, ...PRO_WORDS];
-  C.topics = [...GENERAL_TOPICS, ...PRO_TOPICS];
+  C.words = [...STARTER_WORDS, ...GENERAL_WORDS, ...PRO_WORDS];
+  C.topics = [...STARTER_TOPICS, ...GENERAL_TOPICS, ...PRO_TOPICS];
   C.readings = [...READINGS];
   C.scenarios = [...SCENARIOS];
   for (const p of packs) {

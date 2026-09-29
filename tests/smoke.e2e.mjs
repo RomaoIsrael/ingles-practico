@@ -54,7 +54,7 @@ await page.waitForTimeout(300); await shot("06-home");
 // Lección de gramática completa
 await go("/lesson/" + encodeURIComponent("a1-5:grammar:g.present-simple")); await shot("07-lesson-learn");
 await click("[data-simple]");
-await click("[data-go]");
+for (let i = 0; i < 8 && !(await page.locator("#check").count()); i++) { await click("[data-next]"); if (i === 2) await shot("07b-lesson-slide"); }
 await solveRunner(); await shot("08-challenge");
 await page.fill("#ch", "He go to work every day and she work in a bank.");
 await click("[data-check]"); await shot("09-challenge-fb");
@@ -73,8 +73,29 @@ if (await page.locator("[data-help]").count()) await click("[data-help]");
 if (await page.locator("[data-end]").count()) await click("[data-end]");
 await page.waitForTimeout(300); await shot("12-roleplay-eval");
 
+// Starter: alfabeto y examen de unidad
+await go("/unit/s-1"); await shot("16-unit");
+await go("/lesson/" + encodeURIComponent("s-1:alphabet:abc")); await shot("17-alphabet");
+await click("[data-go]"); await solveRunner();
+await go("/lesson/" + encodeURIComponent("a1-1:phrases:a1-1")); await click("[data-go]"); await solveRunner();
+await go("/lesson/" + encodeURIComponent("a1-1:test:a1-1")); await click("[data-go]"); await solveRunner(); await shot("18-unit-test");
+// Test EF-style completo
+await go("/tests/ef"); await click("[data-go]");
+for (let b = 0; b < 8; b++) {
+  if (await page.locator("[data-go]").count() && !(await page.locator("[data-submit]").count())) await click("[data-go]");
+  if (!(await page.locator("[data-submit]").count())) break;
+  const qs = await page.locator(".card .options").count();
+  for (let q = 0; q < qs; q++) await page.locator(".card .options").nth(q).locator(".opt").first().click();
+  if (b === 0) await shot("19-ef-reading");
+  await click("[data-submit]");
+}
+await page.waitForTimeout(300); await shot("20-certificate");
+await go("/tests/level/A2"); await click("[data-go]"); await solveRunner(); await shot("21-level-cert");
+await go("/grammar/g.present-simple"); await shot("22-grammar-notes");
+await go("/syllabus/A1"); await shot("23-syllabus");
+
 // Recorrido de todas las pantallas
-const routes = ["/home", "/learn/A1", "/learn/B2", "/learn/PRO", "/unit/a1-1", "/grammar", "/grammar/g.present-perfect", "/practice", "/vocab", "/vocab/topic/qa-core", "/word/w.inspection", "/dictionary", "/review", "/listening", "/reading", "/read/r.b1-incident", "/writing", "/writing/w.email-request", "/email", "/pronunciation", "/pron/pr.th", "/shadowing", "/mistakes", "/smart-review", "/games", "/game/match", "/game/memory", "/game/race", "/think", "/translate", "/library/falsefriends", "/library/phrasal", "/library/idioms", "/library/collocations", "/library/usuk", "/library/natural", "/doclab", "/speak", "/talk", "/interview", "/interview/candidate/behavioral", "/interview/recruiter/basic", "/fluency", "/pro", "/pro/qaqc", "/pro/law", "/pro/hr", "/pro/career", "/phrases/meeting", "/clauses", "/plain", "/cv", "/linkedin", "/profile", "/brain", "/brain?cat=grammar", "/map", "/reports", "/achievements", "/goals", "/favorites", "/settings", "/privacy", "/search", "/exam/A2", "/exam/weekly", "/plan/done"];
+const routes = ["/home", "/learn/A1", "/learn/B2", "/learn/PRO", "/unit/a1-1", "/grammar", "/grammar/g.present-perfect", "/practice", "/vocab", "/vocab/topic/qa-core", "/word/w.inspection", "/dictionary", "/review", "/listening", "/reading", "/read/r.b1-incident", "/writing", "/writing/w.email-request", "/email", "/pronunciation", "/pron/pr.th", "/shadowing", "/mistakes", "/smart-review", "/games", "/game/match", "/game/memory", "/game/race", "/think", "/translate", "/library/falsefriends", "/library/phrasal", "/library/idioms", "/library/collocations", "/library/usuk", "/library/natural", "/doclab", "/speak", "/talk", "/interview", "/interview/candidate/behavioral", "/interview/recruiter/basic", "/fluency", "/pro", "/pro/qaqc", "/pro/law", "/pro/hr", "/pro/career", "/phrases/meeting", "/clauses", "/plain", "/cv", "/linkedin", "/profile", "/brain", "/brain?cat=grammar", "/map", "/reports", "/achievements", "/goals", "/favorites", "/settings", "/privacy", "/search", "/exam/A2", "/exam/weekly", "/plan/done", "/tests", "/tests/levels", "/tests/units", "/tests/business", "/tests/quick", "/syllabus", "/syllabus/B1", "/syllabus/C2", "/unit/a2-1", "/grammar/g.passive", "/grammar/g.inversion", "/lesson/" + encodeURIComponent("s-5:vocab:verbs")];
 for (const r of routes) { await go(r); if (["/home", "/map", "/brain", "/reports", "/profile", "/pro/qaqc", "/speak", "/practice"].includes(r)) await shot("r" + r.replace(/[/?=]/g, "_")); }
 
 // Writing coach y Ask

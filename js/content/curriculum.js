@@ -1,7 +1,9 @@
 // Currículo A1–C2: nivel → etapa (ruta visual) → unidad → lecciones (secciones 3, 15, 16).
 // Tipos de lección: grammar · vocab · talk · read · pron
+import { SYLLABUS } from "./syllabus.js";
+
 export const STAGES = [
-  { id: "start", title: "START", icon: "🚩", level: "A1" },
+  { id: "start", title: "START · Starter (desde cero)", icon: "🚩", level: "A1" },
   { id: "foundations", title: "English Foundations", icon: "🧱", level: "A1" },
   { id: "basic-conv", title: "Basic Conversation", icon: "💬", level: "A1" },
   { id: "grammar-found", title: "Grammar Foundations", icon: "🧩", level: "A2" },
@@ -16,7 +18,12 @@ export const STAGES = [
 
 const U = (id, level, stage, title, es, lessons) => ({ id, level, stage, title, es, lessons: lessons.map(([kind, ref]) => ({ id: `${id}:${kind}:${ref}`, kind, ref, unit: id })) });
 
-export const UNITS = [
+const BASE_UNITS = [
+  U("s-1", "A1", "start", "The alphabet", "El alfabeto", [["alphabet", "abc"], ["vocab", "classroom"]]),
+  U("s-2", "A1", "start", "Hello & survival English", "Saludos e inglés de supervivencia", [["vocab", "social"]]),
+  U("s-3", "A1", "start", "Numbers", "Los números", [["vocab", "numbers"]]),
+  U("s-4", "A1", "start", "Colors, days & months", "Colores, días y meses", [["vocab", "colors"], ["vocab", "calendar"]]),
+  U("s-5", "A1", "start", "My first 100 words", "Mis primeras 100 palabras", [["vocab", "verbs"], ["vocab", "body"], ["vocab", "animals"], ["vocab", "jobs"], ["vocab", "places"]]),
   U("a1-1", "A1", "foundations", "Hello!", "¡Hola!", [["grammar", "g.be"], ["vocab", "social"], ["pron", "pr.th"]]),
   U("a1-2", "A1", "foundations", "People & jobs", "Personas y trabajos", [["grammar", "g.pronouns"], ["grammar", "g.articles"], ["vocab", "work"], ["read", "r.a1-team"]]),
   U("a1-3", "A1", "foundations", "Family & things", "Familia y cosas", [["grammar", "g.possessives"], ["grammar", "g.plurals"], ["vocab", "family"]]),
@@ -54,6 +61,14 @@ export const UNITS = [
   U("c1-2", "C1", "fluency", "Style", "Estilo", [["grammar", "g.cleft"], ["grammar", "g.participle-clauses"], ["talk", "networking"]]),
   U("c2-1", "C2", "c2", "Academic & professional writing", "Escritura académica y profesional", [["grammar", "g.academic"], ["grammar", "g.advanced-writing"], ["grammar", "g.subjunctive"], ["read", "r.c2-language"]]),
 ];
+
+// Cada unidad termina con frases útiles (funciones comunicativas) y un examen de unidad
+export const UNITS = BASE_UNITS.map((u) => {
+  const extra = [];
+  if (SYLLABUS[u.id]?.phrases?.length) extra.push({ id: `${u.id}:phrases:${u.id}`, kind: "phrases", ref: u.id, unit: u.id });
+  extra.push({ id: `${u.id}:test:${u.id}`, kind: "test", ref: u.id, unit: u.id });
+  return { ...u, lessons: [...u.lessons, ...extra], goals: SYLLABUS[u.id]?.goals || [], learn: SYLLABUS[u.id]?.learn || [], phrases: SYLLABUS[u.id]?.phrases || [] };
+});
 
 export const LESSONS = UNITS.flatMap((u) => u.lessons);
 export const LESSON_BY_ID = Object.fromEntries(LESSONS.map((l) => [l.id, l]));

@@ -1,5 +1,5 @@
 /* Service worker generado por tools/gen-sw.mjs — no editar a mano. */
-const CACHE = "ingles-practico-5a85c7b3f3";
+const CACHE = "ingles-practico-72315dd260";
 const FILES = [
  "./",
  "./css/app.css",
@@ -16,6 +16,8 @@ const FILES = [
  "./js/content/grammar-a2.js",
  "./js/content/grammar-adv.js",
  "./js/content/grammar-b1.js",
+ "./js/content/grammar-deep-1.js",
+ "./js/content/grammar-deep-2.js",
  "./js/content/grammar.js",
  "./js/content/placement-bank.js",
  "./js/content/pro-vocab.js",
@@ -24,6 +26,9 @@ const FILES = [
  "./js/content/reading.js",
  "./js/content/registry.js",
  "./js/content/scenarios.js",
+ "./js/content/starter.js",
+ "./js/content/syllabus.js",
+ "./js/content/tests-bank.js",
  "./js/content/vocab.js",
  "./js/core/actions.js",
  "./js/core/store.js",
@@ -37,6 +42,7 @@ const FILES = [
  "./js/engine/placement.js",
  "./js/engine/planner.js",
  "./js/engine/srs.js",
+ "./js/engine/testing.js",
  "./js/main.js",
  "./js/services/ai.js",
  "./js/services/speech.js",
@@ -48,6 +54,7 @@ const FILES = [
  "./js/ui/screens/ask.js",
  "./js/ui/screens/home.js",
  "./js/ui/screens/learn.js",
+ "./js/ui/screens/lessons-extra.js",
  "./js/ui/screens/library.js",
  "./js/ui/screens/mistakes.js",
  "./js/ui/screens/onboarding.js",
@@ -56,6 +63,8 @@ const FILES = [
  "./js/ui/screens/profile.js",
  "./js/ui/screens/skills.js",
  "./js/ui/screens/speak.js",
+ "./js/ui/screens/syllabus.js",
+ "./js/ui/screens/tests.js",
  "./js/ui/screens/vocab.js",
  "./manifest.json"
 ];

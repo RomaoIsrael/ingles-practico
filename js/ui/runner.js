@@ -18,6 +18,22 @@ const TYPE_LABEL = {
   reverse: "How do you say it in English?", listen: "Listen and choose", gap: "Complete with the right word",
 };
 
+// Instrucciones didácticas por tipo de ejercicio: qué hacer + ejemplo
+export const INSTR = {
+  choose: ["👆", "Lee la frase y toca la opción que completa el espacio en blanco. Después pulsa <b>Check</b>.", "She ___ a teacher. → <b>is</b>"],
+  type: ["⌨️", "Escribe <b>solo</b> la palabra (o palabras) que falta en el espacio. Mira la pista entre paréntesis si la hay.", "He ___ (work) here. → <b>works</b>"],
+  order: ["🧱", "Toca las palabras en el orden correcto para formar la frase. Si te equivocas, pulsa <b>↩ Undo</b>.", "is / she / tired → <b>she is tired</b>"],
+  translate: ["🔄", "Escribe la frase completa en inglés. Las mayúsculas y el punto final no importan; se aceptan contracciones (I'm = I am).", "Soy ingeniero. → <b>I'm an engineer.</b>"],
+  speak: ["🎤", "1) Pulsa 🔊 para escuchar. 2) Pulsa 🎤 y lee la frase en voz alta. 3) Verás qué palabras se entendieron. Si no puedes hablar ahora, pulsa <i>skip</i>.", ""],
+  say: ["🎤", "Escucha la palabra con 🔊, pulsa 🎤 y dila en voz alta con claridad.", ""],
+  fix: ["🔧", "La frase tiene <b>un error</b>. Escribe la frase completa, ya corregida.", "He go to work. → <b>He goes to work.</b>"],
+  recall: ["🧠", "Mira el dibujo y la definición y escribe la palabra en inglés. Pulsa <b>💡 Hint</b> si necesitas ayuda (cada pista resta un poco de puntuación).", "🍎 a round red fruit → <b>apple</b>"],
+  meaning: ["📚", "¿Qué significa la palabra en inglés? Escúchala con 🔊 y elige la traducción correcta.", ""],
+  reverse: ["📚", "Elige la palabra en inglés que corresponde a la palabra en español.", ""],
+  listen: ["🎧", "Pulsa <b>▶ Play</b> (o <b>🐢 Slow</b> para más despacio) todas las veces que necesites y elige lo que escuchaste.", ""],
+  gap: ["🕳️", "Lee la frase y elige la palabra que completa el espacio.", ""],
+};
+
 export function ruleText(topic) {
   if (!topic) return "";
   const lang = explainLang();
@@ -40,7 +56,9 @@ export function runExercises({ title = "Practice", items, onDone, back = "#/prac
     ex._hints = 0;
     const v = (cur = render(`
       <div class="ex-head"><a class="iconbtn" href="${back}" aria-label="Salir">✕</a>${progressBar(i / queue.length)}<span class="small muted">${i + 1}/${queue.length}</span></div>
-      <div class="muted small">${esc(title)} · ${esc(TYPE_LABEL[ex.type] || "")}</div>
+      <div class="muted small">${esc(title)}${ex.section ? " · " + esc(ex.section) : ""}</div>
+      <h3 style="margin:4px 0 0">${esc(TYPE_LABEL[ex.type] || "")}</h3>
+      ${instrBox(ex.type)}
       <div id="ex">${body(ex)}</div>
       <div id="fb"></div>
       <div class="sticky-foot"><button class="btn primary big" id="check" ${needsInput(ex) ? "disabled" : ""}>Check</button></div>`));
@@ -228,6 +246,16 @@ export function runExercises({ title = "Practice", items, onDone, back = "#/prac
   }
 
   show();
+}
+
+// Instrucción visible siempre; el ejemplo se oculta cuando el alumno ya vio ese tipo varias veces
+const seenTypes = {};
+function instrBox(type) {
+  const I = INSTR[type];
+  if (!I) return "";
+  seenTypes[type] = (seenTypes[type] || 0) + 1;
+  const full = seenTypes[type] <= 2;
+  return `<div class="instr"><span class="ic">${I[0]}</span><div>${I[1]}${I[2] && full ? `<div class="small muted" style="margin-top:4px">Ejemplo: ${I[2]}</div>` : ""}</div></div>`;
 }
 
 function catFor(topic) {

@@ -195,3 +195,31 @@ table.t td, table.t th{ padding:8px 6px; border-bottom:1px solid var(--line); te
 .confetti{ position:fixed; inset:0; pointer-events:none; z-index:70; overflow:hidden; }
 .confetti i{ position:absolute; top:-12px; width:9px; height:14px; border-radius:2px; animation:fall 1.6s linear forwards; }
 @keyframes fall{ to{ transform:translateY(105vh) rotate(540deg); opacity:.2; } }
+
+/* Didáctica: instrucciones, apuntes, diapositivas de lección */
+.howto{ background:var(--info-bg); border-radius:14px; padding:10px 14px; margin:8px 0 12px; }
+.howto summary{ font-weight:800; }
+.howto ol{ margin:8px 0 6px; padding-left:20px; } .howto li{ margin:3px 0; }
+.instr{ display:flex; gap:10px; align-items:flex-start; background:var(--info-bg); border-radius:14px; padding:10px 12px; margin:6px 0 10px; font-size:.95rem; }
+.instr .ic{ font-size:1.3rem; line-height:1; }
+.lead{ font-size:1.05rem; line-height:1.6; }
+.tscroll{ overflow-x:auto; margin:6px 0 12px; }
+table.t.grid th{ background:var(--card-2); font-size:.8rem; text-transform:uppercase; letter-spacing:.3px; }
+table.t.grid td{ font-size:.92rem; }
+h4.tt{ margin:12px 0 4px; }
+.usecard{ background:var(--card-2); border-radius:12px; padding:10px 12px; }
+.mistake{ background:var(--card-2); border-radius:12px; padding:10px 12px; border-left:4px solid var(--bad); }
+.iconbtn.sm{ width:30px; height:30px; font-size:.9rem; display:inline-grid; vertical-align:middle; }
+.section-card{ scroll-margin-top:70px; }
+.section-card h2{ display:flex; align-items:center; gap:8px; margin-top:0; }
+.steps{ display:flex; gap:6px; justify-content:center; margin:8px 0 12px; flex-wrap:wrap; }
+.steps i{ width:10px; height:10px; border-radius:50%; background:var(--line); display:block; }
+.steps i.on{ background:var(--primary); width:26px; border-radius:6px; }
+.goal{ display:flex; gap:8px; align-items:flex-start; margin:4px 0; }
+.letter{ font-size:2.2rem; font-weight:900; min-height:92px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.letter small{ font-size:.75rem; font-weight:600; color:var(--muted); }
+.cert{ border:3px double var(--primary); border-radius:18px; padding:22px; text-align:center; background:var(--card); }
+.cert .big{ font-size:3rem; font-weight:900; color:var(--primary); }
+@media print{ .top,.nav,.fab,.no-print,.sticky-foot{ display:none !important; } body{ padding:0; background:#fff; } .card{ box-shadow:none; } details{ display:block; } details > *{ display:block; } }
+/* El botón ASK sube cuando la pantalla tiene un botón fijo abajo */
+body:has(.sticky-foot) .fab{ bottom:calc(150px + env(safe-area-inset-bottom)); padding:10px 13px; }

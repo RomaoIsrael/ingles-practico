@@ -66,6 +66,7 @@ test("curriculum references exist", () => {
     if (l.kind === "talk") assert.ok(C.scenarioById[l.ref], l.id);
     if (l.kind === "read") assert.ok(C.readingById[l.ref], l.id);
     if (l.kind === "pron") assert.ok(SOUND_BY_ID[l.ref], l.id);
+    assert.ok(["grammar", "vocab", "talk", "read", "pron", "alphabet", "phrases", "test"].includes(l.kind), l.id);
   }
   for (const g of C.grammar) assert.ok(LESSONS.some((l) => l.ref === g.id), `grammar ${g.id} not in curriculum`);
 });
@@ -95,5 +96,37 @@ test("readings have 3 questions with distinct options", () => {
   for (const r of C.readings) {
     assert.ok(r.q.length >= 3, r.id);
     for (const [q, a, d] of r.q) assert.ok(!d.includes(a), `${r.id}: ${q}`);
+  }
+});
+
+test("every grammar topic has deep study notes, and the ✅ forms are correct", async () => {
+  for (const g of C.grammar) {
+    const d = g.deep;
+    assert.ok(d, `${g.id} has no deep notes`);
+    assert.ok(d.intro && d.form?.rows?.length && d.mistakes?.length && d.tips?.length, `${g.id} deep notes incomplete`);
+    for (const t of [d.form, d.form2, d.form3].filter(Boolean)) for (const r of t.rows) assert.equal(r.length, t.cols.length, `${g.id}: table row width`);
+    for (const [wrong, right] of d.mistakes) {
+      const errs = detect(right).filter((e) => e.id !== "capital-names");
+      assert.deepEqual(errs.map((e) => e.id), [], `${g.id}: correct form "${right}" flagged`);
+    }
+  }
+});
+
+test("every unit has goals, study contents and ends with a unit test", async () => {
+  for (const u of UNITS) {
+    assert.ok(u.goals.length >= 1, `${u.id} goals`);
+    assert.ok(u.learn.length >= 1, `${u.id} learn`);
+    assert.equal(u.lessons.at(-1).kind, "test", `${u.id} ends with test`);
+  }
+  assert.ok(UNITS.filter((u) => u.stage === "start").length >= 5, "starter units");
+});
+
+test("test bank items are well formed", async () => {
+  const { TEST_READINGS, TEST_LISTENINGS, BUSINESS_ITEMS } = await import("../js/content/tests-bank.js");
+  for (const b of [...TEST_READINGS, ...TEST_LISTENINGS]) for (const [q, a, d] of b.q) assert.ok(!d.includes(a) && d.length >= 2, q);
+  for (const b of BUSINESS_ITEMS) assert.ok(!b.d.includes(b.a), b.q);
+  for (const L of ["A1", "A2", "B1", "B2", "C1"]) {
+    assert.ok(TEST_READINGS.some((r) => r.level === L), `reading ${L}`);
+    assert.ok(TEST_LISTENINGS.some((r) => r.level === L), `listening ${L}`);
   }
 });

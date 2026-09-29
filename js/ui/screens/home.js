@@ -43,6 +43,8 @@ export function registerHome() {
       <h2>Continue Learning</h2>
       ${next ? `<a class="card tap" href="#/lesson/${encodeURIComponent(next.id)}"><div class="row between"><div><div class="muted small">${esc(next.unit.toUpperCase())} · ${esc(next.kind)}</div><b>${esc(lessonTitle(next, C))}</b></div><span class="btn sm primary">▶</span></div></a>` : `<div class="card">🎉 All lessons done at this level.</div>`}
 
+      <div class="grid2" style="margin-top:12px"><a class="tile" href="#/syllabus"><span class="em">📖</span><b>Temario</b><span>Todo el curso A1–C2</span></a><a class="tile" href="#/tests"><span class="em">📝</span><b>Test Center</b><span>Mide tu nivel 0–100</span></a></div>
+
       <h2>Daily Challenge</h2>
       <div class="card"><div class="row between"><b>${ch.done ? "✅" : "🎯"} ${esc(ch.text)}</b><span class="small muted">${ch.progress}/${ch.target}</span></div><div class="small muted">${esc(ch.es)}</div>${progressBar(ch.progress / ch.target, true)}</div>
 

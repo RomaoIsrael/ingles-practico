@@ -11,7 +11,7 @@ import { check, wordDiff, speechScore, textComplexity } from "../../engine/grade
 import { detect, correct } from "../../engine/errors.js";
 import { answer, analyzeText, activity, speakTime, addWord, lessonDone } from "../../core/actions.js";
 import { record } from "../../engine/brain.js";
-import { render, on, progressBar, audioBtn, speedPicker, tr, $, toast, backLink, tappable, openSheet } from "../components.js";
+import { render, on, progressBar, audioBtn, speedPicker, tr, $, toast, backLink, tappable, openSheet, howTo } from "../components.js";
 import { route, go, finishScreen, session } from "../app.js";
 import { runExercises } from "../runner.js";
 import { speak, listen, sttAvailable, stopListening } from "../../services/speech.js";
@@ -30,7 +30,9 @@ function sentencesForLevel(n = 8) {
 export function registerSkills() {
   // ── LISTENING (sección 39) ──
   route("/listening", () => {
-    const v = render(`${backLink("#/practice", "Practice")}<h1>🎧 Listening</h1><p class="muted small">Audio speed:</p>${speedPicker()}
+    const v = render(`${backLink("#/practice", "Practice")}<h1>🎧 Listening</h1>
+    ${howTo("Cómo practicar listening", ["Elige un modo. Empieza por <b>Select what you heard</b> si eres principiante.", "Ajusta la velocidad: 0.5x o 0.75x al principio; 1x cuando te sientas seguro.", "Escucha todas las veces que necesites. Usa audífonos si puedes.", "Dictado: escribe TODO lo que oyes; la corrección te muestra palabra por palabra qué faltó."])}
+    <p class="muted small">Audio speed:</p>${speedPicker()}
       <div class="list" style="margin-top:12px">
         <button class="item" data-mode="select"><span class="em">👂</span><span class="grow"><span class="title">Select what you heard</span><div class="sub">Elige la frase que escuchaste</div></span></button>
         <button class="item" data-mode="blank"><span class="em">🕳️</span><span class="grow"><span class="title">Fill the blank</span><div class="sub">Completa la palabra que falta</div></span></button>
@@ -60,6 +62,7 @@ export function registerSkills() {
     const known = (w) => !!C.words.find((x) => x.word.toLowerCase() === w.toLowerCase());
     const v = render(`${backLink(lesson ? `#/unit/${lesson.unit}` : "#/reading", lesson ? "Unit" : "Reading")}
       <div class="row between"><h1>${r.icon} ${esc(r.title)}</h1><span class="lvl">${r.level}</span></div>
+      ${howTo("Cómo leer este texto", ["Lee el texto completo una vez sin detenerte, para entender la idea general.", "Léelo otra vez: <b>toca cualquier palabra</b> que no conozcas para ver su significado, escucharla y añadirla a tu vocabulario.", "Opcional: pulsa 🔊 Listen para escucharlo mientras lees.", "Pulsa <b>Answer questions</b> y responde las preguntas de comprensión."])}
       <div class="row">${audioBtn(r.text, { label: "🔊 Listen", cls: "btn sm" })}${speedPicker()}</div>
       <div class="card reader" style="margin-top:10px">${tappable(r.text, known)}</div>
       <div class="sticky-foot"><button class="btn primary big" data-q>Answer questions</button></div>`);
@@ -105,7 +108,7 @@ export function registerSkills() {
       if (k >= items.length) return finishScreen({ title: "You're thinking in English!", emoji: "💭", lines: [["Situations", items.length]], next: "#/practice" });
       const it = items[k];
       const v = render(`<div class="ex-head"><a class="iconbtn" href="#/practice">✕</a>${progressBar(k / items.length)}</div>
-        <div class="muted small">THINK IN ENGLISH · no Spanish</div><div class="emoji-big">${it.emoji}</div><div class="prompt center">${esc(it.prompt)}</div>
+        <div class="muted small">THINK IN ENGLISH · no Spanish</div><div class="instr"><span class="ic">💭</span><div>Mira la situación y responde <b>directamente en inglés</b>, sin traducir mentalmente. Frases simples están perfectas.</div></div><div class="emoji-big">${it.emoji}</div><div class="prompt center">${esc(it.prompt)}</div>
         <div class="composer"><textarea class="inp" id="a" rows="2" placeholder="Answer directly in English…"></textarea>${sttAvailable() ? `<button class="mic" data-mic aria-label="Hablar">🎤</button>` : ""}</div><div id="fb"></div>
         <div class="sticky-foot"><button class="btn primary big" data-check>Check</button></div>`);
       let done = false;
@@ -237,6 +240,7 @@ function writingTask(p) {
   const tmpl = p.email ? EMAILS.filter((e) => e.tone).slice(0, 3) : [];
   const v = render(`${backLink("#/writing", "Writing")}<div class="muted small">${esc(p.type)} · ${p.level}</div><h1>${esc(p.prompt)}</h1>${tr(p.es)}
     ${p.email ? `<details class="card soft"><summary>📐 Email structure</summary><ol class="small"><li>Greeting (Dear… / Hi…)</li><li>Purpose (I'm writing to…)</li><li>Details</li><li>Request / next step (Could you…?)</li><li>Closing (Best regards,)</li></ol><div class="small">Models: ${tmpl.map((e) => `<a href="#" data-model="${e.id}">${esc(e.title)}</a>`).join(" · ")}</div></details>` : ""}
+    ${howTo("Cómo escribir tu texto", ["Lee la consigna y piensa 1 minuto qué quieres decir.", p.email ? "Sigue la estructura: saludo → propósito → detalles → petición → despedida (mira los modelos arriba)." : "Organiza tus ideas: introducción, 2–3 ideas con ejemplos y una conclusión.", `Escribe al menos <b>${p.min} palabras</b>. Usa conectores: because, so, however, although…`, "Pulsa <b>Check my writing</b>: verás los errores explicados, la versión corregida y (con IA) versiones natural y profesional."])}
     <textarea class="inp" id="t" rows="9" placeholder="Write here…" style="margin-top:10px"></textarea>
     <div class="row between small muted"><span id="wc">0 words</span><span>min. ${p.min}</span></div>
     <div id="fb"></div><div class="sticky-foot"><button class="btn primary big" data-check>Check my writing</button></div>`);
@@ -286,7 +290,7 @@ function pronSound(snd) {
   const s = store.state;
   const lesson = session.lesson?.ref === snd.id ? session.lesson : null;
   const v = render(`${backLink(lesson ? `#/unit/${lesson.unit}` : "#/pronunciation", lesson ? "Unit" : "Pronunciation")}
-    <h1>${snd.icon} ${esc(snd.title)}</h1><div class="card"><b>ECHO 🎧:</b> ${esc(explainLang() === "en" ? snd.tip.en : snd.tip.es)}</div>
+    <h1>${snd.icon} ${esc(snd.title)}</h1>${howTo("Cómo entrenar este sonido", ["Lee el consejo de ECHO sobre cómo poner la boca y la lengua.", "Escucha los <b>pares mínimos</b> (palabras casi iguales) y nota la diferencia.", "Toca las palabras y frases para escucharlas y repítelas en voz alta.", "Pulsa <b>Start training</b>: primero distingues sonidos al oírlos y luego los dices con el micrófono."])}<div class="card"><b>ECHO 🎧:</b> ${esc(explainLang() === "en" ? snd.tip.en : snd.tip.es)}</div>
     <h2>Minimal pairs</h2>${speedPicker()}<div class="list" style="margin-top:8px">${snd.pairs.map(([a, b]) => `<div class="item" style="cursor:default"><span class="grow"><b>${esc(a)}</b> vs <b>${esc(b)}</b></span>${audioBtn(a)}${audioBtn(b)}</div>`).join("")}</div>
     <h2>Words & sentences</h2><div class="chips">${snd.words.map((w) => `<button class="chip" data-say="${esc(w)}">${esc(w)}</button>`).join("")}</div>
     <div class="list" style="margin-top:8px">${snd.sentences.map((x) => `<div class="item" style="cursor:default"><span class="grow">${esc(x)}</span>${audioBtn(x)}</div>`).join("")}</div>
@@ -315,6 +319,7 @@ function shadowing() {
   const list = SHADOWING[lvl] || SHADOWING.A1;
   let k = 0, stage = 0, scores = [];
   const STAGES = ["1 · Listen", "2 · Read", "3 · Repeat", "4 · Compare", "5 · Repeat without text"];
+  const HELP = ["Escucha la frase sin leerla. Concéntrate en el ritmo y la entonación.", "Ahora lee la frase mientras la escuchas otra vez (🔊).", "Pulsa 🎤 y repite la frase imitando la voz lo más parecido posible.", "Repite de nuevo y compara: verás qué palabras se entendieron (verde) y cuáles faltaron.", "¡Reto! Repite la frase SIN ver el texto, de memoria."];
   const step = () => {
     if (k >= list.length) {
       const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
@@ -325,7 +330,7 @@ function shadowing() {
     const text = list[k];
     const hide = stage === 4;
     const v = render(`<div class="ex-head"><a class="iconbtn" href="#/pronunciation">✕</a>${progressBar((k * 5 + stage) / (list.length * 5))}<span class="small muted">${k + 1}/${list.length}</span></div>
-      <div class="muted small">SHADOWING · ${lvl}</div><h2>${STAGES[stage]}</h2>${speedPicker()}
+      <div class="muted small">SHADOWING · ${lvl}</div><h2>${STAGES[stage]}</h2><div class="instr"><span class="ic">🔁</span><div>${HELP[stage]}</div></div>${speedPicker()}
       <div class="card center" style="margin-top:10px;font-size:1.25rem;font-weight:700;min-height:70px">${hide || stage === 0 ? "🙈 ……" : esc(text)}</div>
       <div class="center" style="margin:14px 0">${audioBtn(text, { cls: "btn primary", label: "🔊 Listen" })}</div>
       ${stage >= 2 ? `<div class="center"><button class="mic" data-mic aria-label="Hablar">🎤</button><div class="small muted" id="heard">${sttAvailable() ? "Repeat the sentence." : "Repeat aloud, then continue."}</div></div>` : ""}

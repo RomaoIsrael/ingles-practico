@@ -127,6 +127,9 @@ function lessonTitle(lesson, C) {
   if (lesson.kind === "talk") return "Talk: " + (C.scenarioById[lesson.ref]?.title || lesson.ref);
   if (lesson.kind === "read") return "Read: " + (C.readingById[lesson.ref]?.title || lesson.ref);
   if (lesson.kind === "pron") return "Sounds: " + lesson.ref.replace("pr.", "").toUpperCase();
+  if (lesson.kind === "alphabet") return "The alphabet: letters & spelling";
+  if (lesson.kind === "phrases") return "Useful phrases";
+  if (lesson.kind === "test") return "Unit test";
   return lesson.ref;
 }
 export { lessonTitle };

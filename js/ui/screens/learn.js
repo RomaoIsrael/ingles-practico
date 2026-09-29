@@ -8,7 +8,8 @@ import { current, stateOf, readyForExam, coverage } from "../../engine/brain.js"
 import { lessonSequence, reviewSet, vocabLessonSequence, profContexts, checkChallenge } from "../../engine/exercises.js";
 import { lessonTitle } from "../../engine/planner.js";
 import { lessonDone, analyzeText, addWord, answer } from "../../core/actions.js";
-import { render, on, progressBar, statePill, audioBtn, tr, $, toast, backLink, openSheet } from "../components.js";
+import { render, on, progressBar, statePill, audioBtn, tr, $, toast, backLink, openSheet, howTo, deepSections } from "../components.js";
+import { lessonExtras } from "./lessons-extra.js";
 import { route, go, finishScreen, session } from "../app.js";
 import { runExercises, ruleText } from "../runner.js";
 import { explainLang } from "../../services/tutor.js";
@@ -16,7 +17,8 @@ import { openAsk } from "./ask.js";
 import { aiReady, ask as aiAsk, friendlyError } from "../../services/ai.js";
 import { systemPrompt } from "../../services/tutor.js";
 
-const KIND_ICON = { grammar: "🧩", vocab: "📚", talk: "🗣️", read: "📖", pron: "👄" };
+const KIND_ICON = { grammar: "🧩", vocab: "📚", talk: "🗣️", read: "📖", pron: "👄", alphabet: "🔤", phrases: "💬", test: "📝" };
+const KIND_ES = { grammar: "Gramática", vocab: "Vocabulario", talk: "Conversación", read: "Lectura", pron: "Pronunciación", alphabet: "Alfabeto", phrases: "Frases útiles", test: "Examen de unidad" };
 
 export function registerLearn() {
   route("/learn", () => go(`#/learn/${store.state.levels.overall}`));
@@ -35,6 +37,7 @@ export function registerLearn() {
     const isCur = tab === s.levels.overall;
     const covTab = coverage(s, C.catalog, tab);
     render(`<h1>Learn</h1>${tabs}
+      <div class="row" style="margin-top:10px"><a class="btn sm" href="#/syllabus/${tab}">📖 Temario ${tab}</a><a class="btn sm" href="#/tests">📝 Test Center</a><a class="btn sm" href="#/grammar">🧩 Apuntes</a></div>
       <div class="card soft" style="margin-top:12px"><div class="row between"><b>${tab} ${{ A1: "Beginner", A2: "Elementary", B1: "Intermediate", B2: "Upper Intermediate", C1: "Advanced", C2: "Proficiency" }[tab]}</b><span class="small muted">Real mastery ${pct(covTab)}%</span></div>${progressBar(covTab)}
         ${isCur ? `<div class="row" style="margin-top:10px"><a class="btn sm ${ready ? "primary" : ""}" href="#/exam/${tab}">${ready ? "🏆 Take the level exam" : `🔒 Level exam at 70% (${pct(cov)}%)`}</a></div>` : ""}</div>
       <div class="path" style="margin-top:16px">${stages.map((st) => {
@@ -42,7 +45,7 @@ export function registerLearn() {
         const all = us.flatMap((u) => u.lessons), done = all.filter((l) => s.lessons[l.id]?.done).length;
         const cls = all.length && done === all.length ? "done" : done ? "now" : "";
         return `<div class="stage ${cls}"><div class="dot">${st.icon}</div><h3 style="padding-top:14px">${esc(st.title)}</h3>
-          ${st.id === "start" ? `<div class="muted small">Tu punto de partida. ¡Vamos!</div>` : ""}
+          ${st.id === "start" ? `<div class="muted small">¿Empiezas desde cero? Aquí aprendes el alfabeto, los números, los saludos y tus primeras 100 palabras.</div>` : ""}
           <div class="list">${us.map((u) => {
             const ud = u.lessons.filter((l) => s.lessons[l.id]?.done).length;
             return `<a class="item" href="#/unit/${u.id}"><span class="em">${ud === u.lessons.length ? "✅" : KIND_ICON[u.lessons[0].kind]}</span><span class="grow"><span class="title">${esc(u.title)}</span><div class="sub">${esc(u.es)} · ${ud}/${u.lessons.length}</div>${progressBar(ud / u.lessons.length, true)}</span></a>`;
@@ -55,10 +58,17 @@ export function registerLearn() {
     const u = UNITS.find((x) => x.id === id);
     if (!u) return go("#/learn");
     const s = store.state;
-    render(`${backLink(`#/learn/${u.level}`, u.level)}<h1>${esc(u.title)}</h1><p class="muted">${esc(u.es)} · ${u.level}</p>
-      <div class="list">${u.lessons.map((l) => {
+    const done = u.lessons.filter((l) => s.lessons[l.id]?.done).length;
+    const next = u.lessons.find((l) => !s.lessons[l.id]?.done);
+    render(`${backLink(`#/learn/${u.level}`, u.level)}<div class="muted small">UNIDAD ${esc(u.id.toUpperCase())} · ${u.level}</div><h1>${esc(u.title)}</h1><p class="muted">${esc(u.es)}</p>
+      ${progressBar(done / u.lessons.length)}<div class="small muted" style="margin:4px 0 12px">${done}/${u.lessons.length} lecciones completadas</div>
+      ${u.goals.length ? `<div class="card"><h3>🎯 Al terminar esta unidad podrás…</h3>${u.goals.map((g) => `<div class="goal">✅ <span>${esc(g)}</span></div>`).join("")}</div>` : ""}
+      ${u.learn.length ? `<div class="card"><h3>📚 Qué vas a estudiar</h3><ul>${u.learn.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+      ${howTo("Cómo estudiar esta unidad", ["Haz las lecciones <b>en orden</b>, de arriba hacia abajo.", "En cada lección: primero <b>lee y escucha</b> la explicación, luego <b>practica</b> y por último <b>habla</b>.", "Si fallas, lee la explicación del error: aprender de los errores es parte del método.", "Termina con el <b>examen de unidad</b> (aprobado ≥ 70 %). Si no apruebas, repasa y vuelve a intentarlo."])}
+      ${next ? `<a class="btn primary big" href="#/lesson/${encodeURIComponent(next.id)}" style="margin-bottom:12px">▶ Continuar: ${esc(lessonTitle(next, C))}</a>` : `<div class="banner">🏆 ¡Unidad completada!</div>`}
+      <h2>Lecciones</h2><div class="list">${u.lessons.map((l, i) => {
         const st = s.lessons[l.id];
-        return `<a class="item" href="#/lesson/${encodeURIComponent(l.id)}"><span class="em">${st?.done ? "✅" : KIND_ICON[l.kind]}</span><span class="grow"><span class="title">${esc(lessonTitle(l, C))}</span><div class="sub">${l.kind} · ${st ? "★".repeat(st.stars) + "☆".repeat(3 - st.stars) : "3–10 min"}</div></span>▶</a>`;
+        return `<a class="item" href="#/lesson/${encodeURIComponent(l.id)}"><span class="em">${st?.done ? "✅" : KIND_ICON[l.kind]}</span><span class="grow"><span class="title">${i + 1}. ${esc(lessonTitle(l, C))}</span><div class="sub">${KIND_ES[l.kind]} · ${st ? "★".repeat(st.stars) + "☆".repeat(3 - st.stars) : l.kind === "test" ? "10 min" : "5–12 min"}</div></span>▶</a>`;
       }).join("")}</div>`);
   });
 
@@ -71,6 +81,7 @@ export function registerLearn() {
     if (l.kind === "talk") return go(`#/roleplay/${l.ref}`);
     if (l.kind === "read") return go(`#/read/${l.ref}`);
     if (l.kind === "pron") return go(`#/pron/${l.ref}`);
+    return lessonExtras(l);
   });
 
   // Lista y ficha de gramática
@@ -110,8 +121,11 @@ function grammarCard(id) {
     <p class="muted">${esc(g.es)} · ${g.level}${r ? ` · Mastery ${pct(current(r))}%` : ""}</p>
     <div class="card"><div style="font-size:2rem">${g.situation.emoji}</div><b>${esc(g.situation.en)}</b>${tr(g.situation.es)}</div>
     <h2>Examples</h2>${examplesBlock(g.examples)}
-    <h2>Rule</h2><div class="card" id="rule">${ruleBlock(g)}</div>
-    <div class="controls">
+    ${g.deep ? `<div class="tabs no-print" style="margin:14px 0 4px">${deepSections(g).map((x) => `<a class="chip" href="javascript:void 0" data-jump="${x.id}">${x.icon} ${esc(x.title.split(" (")[0])}</a>`).join("")}</div>
+      ${deepSections(g).map((x) => `<div class="card section-card" id="sec-${x.id}"><h2>${x.icon} ${esc(x.title)}</h2>${x.html}</div>`).join("")}
+      <div class="card soft"><h3>📌 Resumen de la regla</h3>${ruleBlock(g)}</div>` : `<h2>Rule</h2><div class="card" id="rule">${ruleBlock(g)}</div>`}
+    <div class="controls no-print">
+      <button class="btn sm" data-print>🖨️ Print notes</button>
       <button class="btn sm" data-simple>💡 Explain More Simply</button>
       <button class="btn sm" data-more>➕ More Examples</button>
       <a class="btn sm primary" href="#/grammar/${g.id}/practice">🎯 Practice This</a>
@@ -120,7 +134,9 @@ function grammarCard(id) {
       <button class="btn sm" data-fav>${fav ? "★ Saved" : "☆ Favorite"}</button>
       <button class="btn sm" data-note>📝 Note</button>
     </div><div id="extra"></div>`);
-  on(v, "click", "[data-simple]", () => ($("#extra", v).innerHTML = ruleBlock(g, true)));
+  on(v, "click", "[data-simple]", () => { $("#extra", v).innerHTML = ruleBlock(g, true); $("#extra", v).scrollIntoView({ behavior: "smooth" }); });
+  on(v, "click", "[data-jump]", (el) => v.querySelector(`#sec-${el.dataset.jump}`)?.scrollIntoView({ behavior: "smooth" }));
+  on(v, "click", "[data-print]", () => window.print());
   on(v, "click", "[data-more]", async () => {
     const box = $("#extra", v);
     const prof = profContexts(s.profile);
@@ -171,24 +187,49 @@ function grammarLesson(l) {
   const s = store.state;
   const pref = s.prefs[g.id];
   const t0 = Date.now();
-  const v = render(`${backLink(`#/unit/${l.unit}`, "Unit")}
-    <div class="muted small">LEARN · ${g.level}</div><h1>${g.icon} ${esc(g.title)}</h1>${tr(g.es)}
-    <div class="card"><div style="font-size:2.2rem">${g.situation.emoji}</div><b>${esc(g.situation.en)}</b>${tr(g.situation.es)}</div>
-    <h2>Example</h2>${examplesBlock(g.examples.slice(0, 4))}
-    <h2>Rule</h2><div class="card" id="rule">${ruleBlock(g, pref === "hard")}${pref === "hard" ? ruleBlock(g) : ""}</div>
-    <div class="controls"><button class="btn sm" data-simple>💡 Explain More Simply</button><button class="btn sm" data-ask>🙋 Ask</button><button class="btn sm" data-know>✔ I already know this</button></div>
-    <div class="sticky-foot"><button class="btn primary big" data-go>Practice →</button></div>`);
-  on(v, "click", "[data-simple]", () => ($("#rule", v).innerHTML = ruleBlock(g, true) + ruleBlock(g)));
-  on(v, "click", "[data-ask]", () => openAsk(`Explain ${g.title} with examples.`));
-  on(v, "click", "[data-know]", () => quickCheck(l, g));
-  on(v, "click", "[data-go]", () => {
+  // Diapositivas: Situación → Ejemplos → apuntes por secciones → Resumen → Práctica
+  const deep = deepSections(g);
+  const slides = [
+    { icon: "🎬", title: "1 · La situación", html: `<div class="card"><div style="font-size:2.6rem">${g.situation.emoji}</div><p class="lead"><b>${esc(g.situation.en)}</b></p>${tr(g.situation.es)}</div><p class="muted small">Primero vemos el idioma en una situación real. Después entenderemos la regla.</p>` },
+    { icon: "👀", title: "2 · Mira los ejemplos", html: `${howTo("Qué hacer", ["Pulsa 🔊 y escucha cada frase.", "Repite en voz alta.", "Fíjate en las palabras que cambian: ahí está la regla."], { open: true })}${examplesBlock(g.examples)}` },
+    ...(deep.length ? groupDeep(deep) : [{ icon: "📏", title: "3 · La regla", html: ruleBlock(pref === "hard" ? g : g) }]),
+    { icon: "📌", title: "Resumen", html: `<div class="card">${ruleBlock(g)}</div>${pref === "hard" ? ruleBlock(g, true) : ""}<p class="muted small">Ahora vamos a practicar: primero reconocer, después escribir y al final hablar.</p>` },
+  ];
+  let k = 0;
+  const show = () => {
+    const sl = slides[k];
+    const v = render(`${backLink(`#/unit/${l.unit}`, "Unit")}
+      <div class="muted small">LEARN · ${g.level} · ${esc(g.title)}</div>
+      <div class="steps" aria-label="Paso ${k + 1} de ${slides.length}">${slides.map((_, i) => `<i class="${i === k ? "on" : ""}"></i>`).join("")}</div>
+      <h1>${sl.icon} ${esc(sl.title)}</h1>${k === 0 ? `<div class="small muted">${esc(g.es)}</div>` : ""}
+      ${sl.html}
+      <div class="controls"><button class="btn sm" data-simple>💡 Explain More Simply</button><button class="btn sm" data-ask>🙋 Ask</button>${k === 0 ? `<button class="btn sm" data-know>✔ I already know this</button>` : ""}</div><div id="simple"></div>
+      <div class="sticky-foot row" style="flex-wrap:nowrap">${k ? `<button class="btn big" data-prev style="width:auto">←</button>` : ""}<button class="btn primary big" data-next>${k < slides.length - 1 ? "Siguiente →" : "¡A practicar! →"}</button></div>`);
+    on(v, "click", "[data-simple]", () => ($("#simple", v).innerHTML = ruleBlock(g, true)));
+    on(v, "click", "[data-ask]", () => openAsk(`Explain ${g.title} with examples.`));
+    on(v, "click", "[data-know]", () => quickCheck(l, g));
+    on(v, "click", "[data-prev]", () => { k--; show(); });
+    on(v, "click", "[data-next]", () => { if (k < slides.length - 1) { k++; show(); } else practice(); });
+  };
+  const practice = () => {
     const prof = profContexts(s.profile), recent = s.skills[g.id]?.ctx || [];
     const items = lessonSequence(g, { prof, recent, hard: pref === "hard", easy: pref === "easy" });
     // Review: interleaving con un tema ya estudiado
     const studied = C.grammar.filter((x) => x.id !== g.id && s.skills[x.id]?.n);
     if (studied.length) items.push(...reviewSet(shuffle(studied)[0], 2, { prof }));
     runExercises({ title: g.title, items, back: `#/unit/${l.unit}`, onDone: (res) => challenge(l, g, res, t0) });
-  });
+  };
+  show();
+}
+
+// Agrupa los apuntes en 3–4 diapositivas digeribles
+function groupDeep(deep) {
+  const by = Object.fromEntries(deep.map((d) => [d.id, d]));
+  const card = (d) => (d ? `<div class="card"><h3>${d.icon} ${esc(d.title)}</h3>${d.html}</div>` : "");
+  const out = [{ icon: "💡", title: "3 · Entiende la regla", html: card(by.intro) + card(by.form) }];
+  if (by.uses) out.push({ icon: "🎯", title: "4 · ¿Cuándo se usa?", html: card(by.uses) + card(by.signals) + card(by.spelling) });
+  if (by.mistakes || by.spanish || by.tips) out.push({ icon: "⚠️", title: "5 · Errores comunes y trucos", html: card(by.mistakes) + card(by.spanish) + card(by.tips) });
+  return out;
 }
 
 function quickCheck(l, g) {

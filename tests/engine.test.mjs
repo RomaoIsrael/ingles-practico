@@ -170,3 +170,16 @@ test("Exercises prioritize the student's professional contexts", () => {
   const order = makeGrammarExercise(g, g.items[0], "order", seeded(5));
   assert.equal(order.tokens.join(" ").length + order.punct.length, order.answer.length);
 });
+
+test("EF-style adaptive section: all correct scores high, all wrong scores A1", async () => {
+  const { AdaptiveSection, levelFromScore, levelTestItems } = await import("../js/engine/testing.js");
+  const good = new AdaptiveSection("reading", { blocks: 3, rnd: seeded(9) });
+  while (!good.finished) { const b = good.next(); good.record(b.level, b.q.length, b.q.length); }
+  assert.ok(good.score() >= 51, `score ${good.score()}`);
+  const bad = new AdaptiveSection("listening", { blocks: 3, rnd: seeded(8) });
+  while (!bad.finished) { const b = bad.next(); bad.record(b.level, 0, b.q.length); }
+  assert.equal(levelFromScore(bad.score()), "A1");
+  const items = levelTestItems(C, "B1", 24, seeded(7));
+  assert.equal(items.length, 24);
+  assert.ok(items.every((x) => x.options.includes(x.answer)));
+});

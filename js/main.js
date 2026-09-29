@@ -16,6 +16,8 @@ import { registerLibrary } from "./ui/screens/library.js";
 import { registerSpeak } from "./ui/screens/speak.js";
 import { registerPro } from "./ui/screens/pro.js";
 import { registerProfile } from "./ui/screens/profile.js";
+import { registerTests } from "./ui/screens/tests.js";
+import { registerSyllabus } from "./ui/screens/syllabus.js";
 import { openAsk } from "./ui/screens/ask.js";
 import { notice } from "./engine/planner.js";
 import { C } from "./content/registry.js";
@@ -26,7 +28,7 @@ loadContent(store.state.packs);
 applyPrefs();
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", applyPrefs);
 
-[registerOnboarding, registerPlacement, registerHome, registerLearn, registerVocab, registerSkills, registerMistakes, registerLibrary, registerSpeak, registerPro, registerProfile].forEach((r) => r());
+[registerOnboarding, registerPlacement, registerHome, registerLearn, registerVocab, registerSkills, registerMistakes, registerLibrary, registerSpeak, registerPro, registerProfile, registerTests, registerSyllabus].forEach((r) => r());
 
 wireGlobalAudio();
 onBadge((b) => { toast(`🏅 Achievement unlocked: ${b.title}`, 3500); confetti(); });

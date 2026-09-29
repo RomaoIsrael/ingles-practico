@@ -144,3 +144,30 @@ export function tr(es) {
 export function tappable(text, known = () => false) {
   return esc(text).replace(/[A-Za-z][A-Za-z'’-]*/g, (w) => `<span class="w${known(w) ? " known" : ""}" data-word="${w}">${w}</span>`).replace(/\n/g, "<br>");
 }
+
+// Caja de instrucciones paso a paso (didáctica): título, pasos numerados y ejemplo opcional
+export function howTo(title, steps, { example = "", open = false } = {}) {
+  return `<details class="howto" ${open ? "open" : ""}><summary>📝 ${esc(title)}</summary><ol>${steps.map((s) => `<li>${s}</li>`).join("")}</ol>${example ? `<div class="small"><b>Ejemplo:</b> ${example}</div>` : ""}</details>`;
+}
+
+// Tabla genérica {title?, cols, rows}
+export function table(t) {
+  if (!t) return "";
+  return `${t.title ? `<h4 class="tt">${esc(t.title)}</h4>` : ""}<div class="tscroll"><table class="t grid"><thead><tr>${t.cols.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${t.rows.map((r) => `<tr>${r.map((c, i) => `<td>${i === 0 ? `<b>${esc(c)}</b>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+
+// Secciones de los apuntes profundos de gramática. Devuelve [{id, title, html}]
+export function deepSections(g) {
+  const d = g.deep;
+  if (!d) return [];
+  const out = [];
+  out.push({ id: "intro", icon: "💡", title: "¿Qué es y para qué sirve?", html: `<p class="lead">${esc(d.intro)}</p>` });
+  out.push({ id: "form", icon: "🧱", title: "La forma (cómo se construye)", html: table(d.form) + table(d.form2) + table(d.form3) });
+  if (d.uses?.length) out.push({ id: "uses", icon: "🎯", title: "¿Cuándo se usa?", html: `<div class="list">${d.uses.map(([u, en, es]) => `<div class="usecard"><div class="small muted">${esc(u)}</div><div><b>${esc(en)}</b> <button class="iconbtn sm" data-say="${esc(en)}" aria-label="Escuchar">🔊</button></div>${es ? `<div class="small">${esc(es)}</div>` : ""}</div>`).join("")}</div>` });
+  if (d.spelling?.length) out.push({ id: "spelling", icon: "✏️", title: "Reglas de ortografía", html: `<ul>${d.spelling.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` });
+  if (d.signals?.length) out.push({ id: "signals", icon: "🚦", title: "Palabras señal (te avisan qué tiempo usar)", html: `<div class="chips">${d.signals.map((x) => `<span class="chip">${esc(x)}</span>`).join("")}</div>` });
+  if (d.mistakes?.length) out.push({ id: "mistakes", icon: "⚠️", title: "Errores comunes (¡evítalos!)", html: `<div class="list">${d.mistakes.map(([w, r, why]) => `<div class="mistake"><div>❌ <s>${esc(w)}</s></div><div>✅ <b>${esc(r)}</b></div><div class="small muted">${esc(why)}</div></div>`).join("")}</div>` });
+  if (d.spanish) out.push({ id: "spanish", icon: "🇪🇸", title: "Comparación con el español", html: `<p>${esc(d.spanish)}</p>` });
+  if (d.tips?.length) out.push({ id: "tips", icon: "🧠", title: "Trucos para recordar", html: `<ul>${d.tips.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` });
+  return out;
+}

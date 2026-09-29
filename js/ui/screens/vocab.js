@@ -26,6 +26,7 @@ export function registerVocab() {
         ${t("#/mistakes", "🎯", "Mistakes", `${s.mistakes.filter((m) => !m.fixed).length} to fix`)}
         ${t("#/smart-review", "🧠", "Smart Review", "Mixed, personalized")}
       </div>
+      <h2>Study & tests</h2><div class="grid2">${t("#/syllabus", "📖", "Temario", "El curso como materia")}${t("#/tests", "📝", "Test Center", "EF/GoFluent-style tests")}</div>
       <h2>Games</h2><div class="grid2">${t("#/games", "🎮", "Game Mode", "8 mini-games")}${t("#/think", "💭", "Think in English", "No Spanish allowed")}</div>
       <h2>Library</h2><div class="grid2">
         ${t("#/library/falsefriends", "⚠️", "False friends", "actually ≠ actualmente")}

@@ -24,7 +24,7 @@ export function freshState() {
     skills: {}, vocab: {}, lessons: {}, mistakes: [], patterns: {}, log: [], speaking: {},
     game: { xp: 0, coins: 0, streak: 0, best: 0, lastDay: "", freezes: 1, freezeWeek: "", badges: {}, dailyDone: {}, },
     daily: { date: "", blocks: [], done: [] },
-    conversations: [], favorites: [], notes: [], prefs: {}, packs: [], writings: 0, emails: 0,
+    conversations: [], favorites: [], notes: [], prefs: {}, packs: [], writings: 0, emails: 0, tests: [],
   };
 }
 

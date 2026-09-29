@@ -189,3 +189,17 @@ Se importa en **Perfil → Ajustes → Content (CMS)**. `validatePack()` rechaza
 ## 5. Checklist editorial (sección 167)
 
 Antes de publicar contenido nuevo: gramática correcta · inglés natural (lo diría un nativo) · nivel CEFR coherente · adecuado al contexto profesional · sin copiar libros ni exámenes oficiales · traducción revisada · ejemplo que usa la palabra · pasa `npm test`.
+
+## 6. Ampliación v0.2 (curso completo desde cero)
+
+| Pedido | Implementación |
+|--------|----------------|
+| Instrucciones más claras, por secciones | `INSTR` en `ui/runner.js` (qué hacer + ejemplo en cada tipo de ejercicio) y `howTo()` en cada actividad |
+| Pruebas como EF / GoFluent | `engine/testing.js` + `content/tests-bank.js` + `ui/screens/tests.js`: test adaptativo Reading + Listening (0–100 ↔ CEFR), tests de nivel A1–C2, Business English, Quick check, exámenes de unidad y certificado. Formatos inspirados en esas plataformas; contenido 100 % original |
+| Temas de estudio como materia | `ui/screens/syllabus.js` (Temario por nivel, imprimible) |
+| Unidades ampliadas con detalle | `content/syllabus.js`: objetivos Can-do, contenidos y frases por unidad; cada unidad termina con frases útiles + examen |
+| Aprender desde cero | Unidades Starter S-1…S-5 (`content/starter.js`): alfabeto, supervivencia, números, colores, días/meses, 100 primeras palabras |
+| Reglas gramaticales más profundas | `content/grammar-deep-1.js` y `grammar-deep-2.js`: apuntes completos de los 45 temas, mostrados como diapositivas en las lecciones y como ficha imprimible |
+| Muy didáctica | Lección en diapositivas con barra de pasos, ejemplos con audio antes de la regla, errores comunes y trucos, comparación con el español |
+
+Referencias pedagógicas (solo como inspiración de formato y secuencia, sin copiar contenido): MCER/CEFR y Cambridge English Scale (niveles y descriptores Can-do), secuencia gramatical de libros de texto internacionales, EF SET (test adaptativo de lectura y escucha con escala 0–100), GoFluent (tests por nivel con inglés de negocios), Wall Street English (unidades con objetivos y encuentros de práctica), Duolingo (ruta visual, microlecciones, gamificación).
